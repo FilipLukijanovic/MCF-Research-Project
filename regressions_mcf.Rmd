@@ -13,9 +13,12 @@ library(tidyr)
 library(zoo)
 library(dplyr)
 library(stargazer)
+library(lmtest)
 ```
 
-```{r, echo=FALSE}
+
+
+```{r}
 
 setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 path<-dirname(rstudioapi::getSourceEditorContext()$path)
@@ -112,10 +115,12 @@ IR_Surprises<- IR_Lead$DFF-Fed_Futures$FORWARD
 ########################### CONSTRUCTION OF CORE DATASET FOR REGRESSIONS #############
 ######################################################################################
 
+
+
 Core$return <- SPX_return$Daily_Return
 Core$lagged_return <- as.numeric(SPX_return$lagged_return)
 Core$abnormal_return <- as.numeric(SPX_return$abnormal_returns)
-Core$IR<- IR$DFF
+Core$IR<- IR_Lead$DFF
 Core$Surprise<-IR_Surprises
 Core$debt_equity<- SPX_DE$Net_Debt_Share
 
@@ -123,11 +128,15 @@ Core$debt_equity<- SPX_DE$Net_Debt_Share
 
 ```{r, results='asis'}
 
+simple_tone <- lm(abnormal_return ~ Tone, data = Core)
+simple_unc <- lm(abnormal_return ~ Unc, data = Core)
+simple_con <- lm(abnormal_return ~ Con, data = Core)
 interactions_tone<-lm(abnormal_return~Tone*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
 interactions_unc<-lm(abnormal_return~Unc*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
 interactions_con<-lm(abnormal_return~Con*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
 
-
+stargazer(simple_tone, simple_con, simple_unc, 
+          column.labels = c("Tone", "Unc", "Con"), header = FALSE)
 stargazer(interactions_tone, interactions_unc, interactions_con,
           column.labels = c("Tone", "Unc", "Con"), header = F)
 
@@ -140,6 +149,8 @@ trial_tone<-lm(abnormal_return~Tone + IR + lagged_return + Surprise + debt_equit
 trial_unc<-lm(abnormal_return~Unc + IR + lagged_return + Surprise + debt_equity, data=Core)
 trial_con<-lm(abnormal_return~Con + IR + lagged_return + Surprise + debt_equity, data=Core)
 
+stargazer(simple_tone, simple_con, simple_unc, 
+          column.labels = c("Tone", "Unc", "Con"), header = F)
 stargazer(trial_tone, trial_unc, trial_con,
           column.labels = c("Tone", "Unc", "Con"), header = F)
 
