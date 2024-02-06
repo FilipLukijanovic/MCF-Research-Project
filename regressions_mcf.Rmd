@@ -1,0 +1,158 @@
+---
+title: "MCF Regressions"
+author: "Peter Prlleshi"
+date: "2024-01-24"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+library(readxl)
+library(tidyr)
+library(zoo)
+library(dplyr)
+library(stargazer)
+```
+
+```{r, echo=FALSE}
+
+setwd(dirname(rstudioapi::getSourceEditorContext()$path))
+path<-dirname(rstudioapi::getSourceEditorContext()$path)
+
+Core <- read.csv("./Statement_SPX_matched.csv")
+Core$Date <- as.Date(Core$Date, format = "%d/%m/%Y") # converting the date column
+FilterDates<-c(Core$Date)
+Core<- Core[,-5]
+
+#################################################################################
+Fed_Futures <- read_excel("./FED_FORWARDS.xlsx")
+Fed_Futures$Date <- as.Date(Fed_Futures$Date, format="%Y-%m-%d %H:%M:%S")
+
+Fed_Futures<- Fed_Futures %>% 
+  mutate(Date = as.Date(Date)) %>%  
+  complete(Date = seq.Date(min(Date), max(Date), by="day"))
+      
+Fed_Futures<-na.locf(Fed_Futures, fromLast = FALSE)
+Fed_Futures<- Fed_Futures[Fed_Futures$Date %in% FilterDates,]
+
+#####################################################################################
+
+IR <- read.csv("./DFF.csv")
+IR$Date <- as.Date(IR$DATE, format = "%Y-%m-%d") # converting the date column
+
+IR<- IR %>% 
+  mutate(Date = as.Date(Date)) %>%  
+  complete(Date = seq.Date(min(Date), max(Date), by="day"))
+
+IR <-na.locf(IR, fromLast = FALSE)
+IR <- IR[IR$Date %in% FilterDates,][,-1]
+
+#########################################################################
+
+SPX_DE <- read_excel("./SPX_DE.xlsx")
+
+SPX_DE$Date <- as.Date(SPX_DE$Date, format="%Y-%m-%d %H:%M:%S")
+
+SPX_DE<- SPX_DE %>% 
+  mutate(Date = as.Date(Date)) %>%  
+  complete(Date = seq.Date(min(Date), max(Date), by="day"))
+
+SPX_DE<-na.locf(SPX_DE, fromLast = FALSE)
+SPX_DE<- SPX_DE[SPX_DE$Date %in% FilterDates,]
+
+##################################################################################
+SPX_price <- read.csv("./HistoricalPrices.csv", header = TRUE)
+SPX_price <- SPX_price[,c(1,5)]# choosing only the closing price each day
+
+SPX_price$Date<-as.Date(SPX_price$Date, format = "%m/%d/%y")# converting the date column
+
+SPX_price<-na.locf(SPX_price, fromLast = FALSE)
+
+SPX_return <- SPX_price %>%
+  arrange(Date) %>% # Make sure the data is sorted by date in ascending order
+  mutate(Daily_Return = log(Close) - log(lag(Close))) 
+
+days_in_year <- 252
+# Calculate rolling 3-year average return
+SPX_return$Rolling_3Y_Avg_Return <- rollapply(SPX_return$Daily_Return, 
+                                             width = 3 * days_in_year, 
+                                             FUN = mean, 
+                                             by.column = TRUE, 
+                                             fill = NA, 
+                                             align = 'right')
+
+
+SPX_return$abnormal_returns<-SPX_return$Daily_Return-SPX_return$Rolling_3Y_Avg_Return
+
+SPX_return$lagged_return<- lag(SPX_return$Daily_Return)
+
+SPX_return<- SPX_return %>% 
+  mutate(Date = as.Date(Date)) %>%  
+  complete(Date = seq.Date(min(Date), max(Date), by="day"))
+
+SPX_return<- SPX_return[SPX_return$Date %in% FilterDates,]
+
+######################################## SURPRISES ###########################
+
+IR_Lead <- read.csv("./DFF.csv")
+IR_Lead$Date <- as.Date(IR_Lead$DATE, format = "%Y-%m-%d") # converting the date column
+IR_Lead$DFF<- lead(IR_Lead$DFF)
+
+IR_Lead<- IR_Lead %>% 
+  mutate(Date = as.Date(Date)) %>%  
+  complete(Date = seq.Date(min(Date), max(Date), by="day"))
+
+IR_Lead <-na.locf(IR_Lead, fromLast = FALSE)
+IR_Lead <- IR_Lead[IR_Lead$Date %in% FilterDates,][,-1]
+
+IR_Surprises<- IR_Lead$DFF-Fed_Futures$FORWARD
+
+######################################################################################
+########################### CONSTRUCTION OF CORE DATASET FOR REGRESSIONS #############
+######################################################################################
+
+Core$return <- SPX_return$Daily_Return
+Core$lagged_return <- as.numeric(SPX_return$lagged_return)
+Core$abnormal_return <- as.numeric(SPX_return$abnormal_returns)
+Core$IR<- IR$DFF
+Core$Surprise<-IR_Surprises
+Core$debt_equity<- SPX_DE$Net_Debt_Share
+
+```
+
+
+
+
+```{r, results='asis'}
+
+interactions_tone<-lm(abnormal_return~Tone*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
+interactions_unc<-lm(abnormal_return~Unc*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
+interactions_con<-lm(abnormal_return~Con*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
+
+
+stargazer(interactions_tone, interactions_unc, interactions_con,
+          column.labels = c("Tone", "Unc", "Con"), header = F)
+
+
+```
+
+
+
+```{r, results='asis'}
+
+trial_tone<-lm(abnormal_return~Tone + IR + lagged_return + Surprise + debt_equity, data=Core)
+trial_unc<-lm(abnormal_return~Unc + IR + lagged_return + Surprise + debt_equity, data=Core)
+trial_con<-lm(abnormal_return~Con + IR + lagged_return + Surprise + debt_equity, data=Core)
+
+stargazer(trial_tone, trial_unc, trial_con,
+          column.labels = c("Tone", "Unc", "Con"), header = F)
+
+
+```
+
+
+
+
+
+
