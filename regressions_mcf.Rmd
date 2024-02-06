@@ -137,8 +137,8 @@ interactions_con<-lm(abnormal_return~Con*debt_equity + IR + lagged_return + Surp
 
 stargazer(simple_tone, simple_con, simple_unc, 
           column.labels = c("Tone", "Unc", "Con"), header = FALSE)
-stargazer(interactions_tone, interactions_unc, interactions_con,
-          column.labels = c("Tone", "Unc", "Con"), header = F)
+#Template for stargazer stargazer(interactions_tone, interactions_unc, interactions_con,
+#column.labels = c("Tone", "Unc", "Con"), header = F)
 
 
 ```
