@@ -121,9 +121,6 @@ Core$debt_equity<- SPX_DE$Net_Debt_Share
 
 ```
 
-
-
-
 ```{r, results='asis'}
 
 interactions_tone<-lm(abnormal_return~Tone*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
@@ -137,8 +134,6 @@ stargazer(interactions_tone, interactions_unc, interactions_con,
 
 ```
 
-
-
 ```{r, results='asis'}
 
 trial_tone<-lm(abnormal_return~Tone + IR + lagged_return + Surprise + debt_equity, data=Core)
@@ -150,9 +145,3 @@ stargazer(trial_tone, trial_unc, trial_con,
 
 
 ```
-
-
-
-
-
-
