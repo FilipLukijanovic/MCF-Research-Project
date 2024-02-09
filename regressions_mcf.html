@@ -257,6 +257,28 @@ if (window.hljs) {
 
 
 
+<style type="text/css">
+
+div.csl-bib-body { }
+div.csl-entry {
+clear: both;
+}
+.hanging div.csl-entry {
+margin-left:2em;
+text-indent:-2em;
+}
+div.csl-left-margin {
+min-width:2em;
+float:left;
+}
+div.csl-right-inline {
+margin-left:2em;
+padding-left:1em;
+}
+div.csl-indent {
+margin-left: 2em;
+}
+</style>
 
 
 
@@ -370,63 +392,367 @@ Market Index</h3>
 
 <div id="sec-abstract" class="section level2">
 <h2>Abstract</h2>
+<div style="page-break-after: always;"></div>
 </div>
 <div id="sec-literature-review" class="section level2">
 <h2>Literature Review</h2>
-<p>The following research project is mostly based on the work done
-by</p>
+<p>The following research project is mostly based on the work done by
+Möller and Reichmann (2021) in the field of sentiment analysis. In their
+paper “ECB Language and Stock Returns - A Textual analysis of ECB Press
+Conferences” they explore the impact of the language used by the ECB in
+their regular press conferences on stock returns in the Euro Area.</p>
+<p>They achieve this by mining the statements and ranking the sentiments
+of each statement based on general tone, uncertainty and constraint.
+Once this is classified, the researchers then cross-check the high
+frequency intraday data for Euro Area stock returns on each statement
+day, by employing the technique of an event study. This allows them to
+see how stock returns reacted to statements by the ECB at whatever point
+they wanted to examine them.</p>
+<p>As mentioned, the researchers focused on tone, uncertainty and
+constraining language for the sentiment analysis. Tone captures the
+overall language - or the overarching narrative - of a statement,
+uncertainty measures how ambiguous a statement may be and constraining
+language quantifies how constraining the ECB communicates to be in the
+future. Of course the researchers did not read through every single
+statement by the ECB, instead, they employed a dictionary-based
+sentiment mining approach that considered grammatical and syntactical
+cues to analyze the sentiment expressed in ECB press conferences.
+Afterwards they scored each statement with regards to each category by
+employing heuristic-adjusted sentiment scores based on word lists used
+in previous studies. <span class="citation">Möller and Reichmann
+(2021a)</span></p>
 </div>
 <div id="sec-data" class="section level2">
 <h2>Data</h2>
+<p>The data used for this project consists of the following:</p>
+<ul>
+<li><p>Federal Reserve (FED) Meetings: The U.S. American FED holds
+regular meetings multiple times per year where they talk about the
+current economic situation and what the plan is going forwards. This
+leaves us with 76 statements over 10 years from January 30th 2013 until
+July 26th 2023.</p></li>
+<li><p>Standard &amp; Poor’s 500 stock market index pricing: We
+cross-check the statements and their nature with the price of the
+S&amp;P 500 stock market index on each day of a statement. This index is
+of particular interest since it incorporates 500 U.S. american companies
+representing a large part of the whole market itself. This means that we
+can use the S&amp;P 500 as a proxy for how the market behaves at a given
+day.</p></li>
+</ul>
+</div>
+<div id="sec-methodology" class="section level2">
+<h2>Methodology</h2>
 <p>XYZ</p>
-<pre class="r"><code>#All models based on Tone
-
-simple_tone &lt;- lm(abnormal_return ~ Tone, data = Core)
-simple_tone_IR &lt;- lm(abnormal_return ~ Tone + IR, data = Core)
-simple_tone_LR &lt;- lm(abnormal_return ~ Tone + IR + lagged_return, data = Core)
-simple_tone_SUR &lt;- lm(abnormal_return ~ Tone + IR + lagged_return + Surprise, data = Core)
-simple_tone_DE &lt;- lm(abnormal_return ~ Tone + IR + lagged_return + Surprise + debt_equity, data = Core)</code></pre>
-<pre class="r"><code>#All models based on Unc
+<pre class="r"><code>simple_tone &lt;- lm(abnormal_return ~ Tone, data = Core)
 simple_unc &lt;- lm(abnormal_return ~ Unc, data = Core)
-simple_unc_IR &lt;- lm(abnormal_return ~ Unc + IR, data = Core)
-simple_unc_LR &lt;- lm(abnormal_return ~ Unc + IR + lagged_return, data = Core)
-simple_unc_SUR &lt;- lm(abnormal_return ~ Unc + IR + lagged_return + Surprise, data = Core)
-simple_unc_DE &lt;- lm(abnormal_return ~ Con + IR + lagged_return + Surprise + debt_equity, data = Core)</code></pre>
-<pre class="r"><code>#All models based on Con
 simple_con &lt;- lm(abnormal_return ~ Con, data = Core)
-simple_con_IR &lt;- lm(abnormal_return ~ Con + IR, data = Core)
-simple_con_LR &lt;- lm(abnormal_return ~ Con + IR + lagged_return, data = Core)
-simple_con_SUR &lt;- lm(abnormal_return ~ Con + IR + lagged_return + Surprise, data = Core)
-simple_con_DE &lt;- lm(abnormal_return ~ Con + IR + lagged_return + Surprise + debt_equity, data = Core)</code></pre>
-<pre class="r"><code>#All models based on Bert and Bert_normed
 simple_bert &lt;- lm(abnormal_return ~ Bert, data = Core)
+
+stargazer(simple_tone, simple_con, simple_unc, simple_bert, column.labels = c(&quot;Tone&quot;, &quot;Unc&quot;, &quot;Con&quot;, &quot;Bert&quot;), header = F)</code></pre>
+<pre class="r"><code>simple_tone_IR &lt;- lm(abnormal_return ~ Tone + IR, data = Core)
+simple_unc_IR &lt;- lm(abnormal_return ~ Unc + IR, data = Core)
+simple_con_IR &lt;- lm(abnormal_return ~ Con + IR, data = Core)
 simple_bert_IR &lt;- lm(abnormal_return ~ Bert + IR, data = Core)
+
+stargazer(simple_tone_IR, simple_con_IR, simple_unc_IR, simple_bert_IR, column.labels = c(&quot;Tone&quot;, &quot;Unc&quot;, &quot;Con&quot;, &quot;Bert&quot;), header = F)</code></pre>
+<pre><code>## 
+## \begin{table}[!htbp] \centering 
+##   \caption{} 
+##   \label{} 
+## \begin{tabular}{@{\extracolsep{5pt}}lcccc} 
+## \\[-1.8ex]\hline 
+## \hline \\[-1.8ex] 
+##  &amp; \multicolumn{4}{c}{\textit{Dependent variable:}} \\ 
+## \cline{2-5} 
+## \\[-1.8ex] &amp; \multicolumn{4}{c}{abnormal\_return} \\ 
+##  &amp; Tone &amp; Unc &amp; Con &amp; Bert \\ 
+## \\[-1.8ex] &amp; (1) &amp; (2) &amp; (3) &amp; (4)\\ 
+## \hline \\[-1.8ex] 
+##  Tone &amp; 0.016 &amp;  &amp;  &amp;  \\ 
+##   &amp; (0.013) &amp;  &amp;  &amp;  \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  Con &amp;  &amp; $-$0.002 &amp;  &amp;  \\ 
+##   &amp;  &amp; (0.033) &amp;  &amp;  \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  Unc &amp;  &amp;  &amp; 0.016 &amp;  \\ 
+##   &amp;  &amp;  &amp; (0.020) &amp;  \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  Bert &amp;  &amp;  &amp;  &amp; 0.009 \\ 
+##   &amp;  &amp;  &amp;  &amp; (0.045) \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  IR &amp; 0.0005 &amp; $-$0.001 &amp; $-$0.0003 &amp; $-$0.001 \\ 
+##   &amp; (0.001) &amp; (0.001) &amp; (0.001) &amp; (0.001) \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  Constant &amp; $-$0.003 &amp; 0.001 &amp; $-$0.002 &amp; $-$0.007 \\ 
+##   &amp; (0.004) &amp; (0.005) &amp; (0.004) &amp; (0.043) \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+## \hline \\[-1.8ex] 
+## Observations &amp; 76 &amp; 76 &amp; 76 &amp; 76 \\ 
+## R$^{2}$ &amp; 0.026 &amp; 0.005 &amp; 0.013 &amp; 0.006 \\ 
+## Adjusted R$^{2}$ &amp; $-$0.001 &amp; $-$0.022 &amp; $-$0.014 &amp; $-$0.021 \\ 
+## Residual Std. Error (df = 73) &amp; 0.010 &amp; 0.010 &amp; 0.010 &amp; 0.010 \\ 
+## F Statistic (df = 2; 73) &amp; 0.958 &amp; 0.194 &amp; 0.494 &amp; 0.211 \\ 
+## \hline 
+## \hline \\[-1.8ex] 
+## \textit{Note:}  &amp; \multicolumn{4}{r}{$^{*}$p$&lt;$0.1; $^{**}$p$&lt;$0.05; $^{***}$p$&lt;$0.01} \\ 
+## \end{tabular} 
+## \end{table}</code></pre>
+<pre class="r"><code>simple_tone_LR &lt;- lm(abnormal_return ~ Tone + IR + lagged_return, data = Core)
+simple_unc_LR &lt;- lm(abnormal_return ~ Unc + IR + lagged_return, data = Core)
+simple_con_LR &lt;- lm(abnormal_return ~ Con + IR + lagged_return, data = Core)
 simple_bert_LR &lt;- lm(abnormal_return ~ Bert + IR + lagged_return, data = Core)
+
+stargazer(simple_tone_LR, simple_con_LR, simple_unc_LR, simple_bert_LR, column.labels = c(&quot;Tone&quot;, &quot;Unc&quot;, &quot;Con&quot;, &quot;Bert&quot;), header = F)</code></pre>
+<pre><code>## 
+## \begin{table}[!htbp] \centering 
+##   \caption{} 
+##   \label{} 
+## \begin{tabular}{@{\extracolsep{5pt}}lcccc} 
+## \\[-1.8ex]\hline 
+## \hline \\[-1.8ex] 
+##  &amp; \multicolumn{4}{c}{\textit{Dependent variable:}} \\ 
+## \cline{2-5} 
+## \\[-1.8ex] &amp; \multicolumn{4}{c}{abnormal\_return} \\ 
+##  &amp; Tone &amp; Unc &amp; Con &amp; Bert \\ 
+## \\[-1.8ex] &amp; (1) &amp; (2) &amp; (3) &amp; (4)\\ 
+## \hline \\[-1.8ex] 
+##  Tone &amp; 0.018 &amp;  &amp;  &amp;  \\ 
+##   &amp; (0.014) &amp;  &amp;  &amp;  \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  Con &amp;  &amp; $-$0.001 &amp;  &amp;  \\ 
+##   &amp;  &amp; (0.034) &amp;  &amp;  \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  Unc &amp;  &amp;  &amp; 0.016 &amp;  \\ 
+##   &amp;  &amp;  &amp; (0.020) &amp;  \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  Bert &amp;  &amp;  &amp;  &amp; 0.010 \\ 
+##   &amp;  &amp;  &amp;  &amp; (0.046) \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  IR &amp; 0.001 &amp; $-$0.001 &amp; $-$0.0003 &amp; $-$0.001 \\ 
+##   &amp; (0.001) &amp; (0.001) &amp; (0.001) &amp; (0.001) \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  lagged\_return &amp; $-$0.090 &amp; $-$0.060 &amp; $-$0.067 &amp; $-$0.062 \\ 
+##   &amp; (0.162) &amp; (0.163) &amp; (0.162) &amp; (0.162) \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  Constant &amp; $-$0.003 &amp; 0.001 &amp; $-$0.002 &amp; $-$0.008 \\ 
+##   &amp; (0.004) &amp; (0.005) &amp; (0.004) &amp; (0.043) \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+## \hline \\[-1.8ex] 
+## Observations &amp; 76 &amp; 76 &amp; 76 &amp; 76 \\ 
+## R$^{2}$ &amp; 0.030 &amp; 0.007 &amp; 0.016 &amp; 0.008 \\ 
+## Adjusted R$^{2}$ &amp; $-$0.011 &amp; $-$0.034 &amp; $-$0.025 &amp; $-$0.034 \\ 
+## Residual Std. Error (df = 72) &amp; 0.010 &amp; 0.011 &amp; 0.010 &amp; 0.011 \\ 
+## F Statistic (df = 3; 72) &amp; 0.736 &amp; 0.172 &amp; 0.382 &amp; 0.188 \\ 
+## \hline 
+## \hline \\[-1.8ex] 
+## \textit{Note:}  &amp; \multicolumn{4}{r}{$^{*}$p$&lt;$0.1; $^{**}$p$&lt;$0.05; $^{***}$p$&lt;$0.01} \\ 
+## \end{tabular} 
+## \end{table}</code></pre>
+<pre class="r"><code>simple_tone_SUR &lt;- lm(abnormal_return ~ Tone + IR + lagged_return + Surprise, data = Core)
+simple_unc_SUR &lt;- lm(abnormal_return ~ Unc + IR + lagged_return + Surprise, data = Core)
+simple_con_SUR &lt;- lm(abnormal_return ~ Con + IR + lagged_return + Surprise, data = Core)
 simple_bert_SUR &lt;- lm(abnormal_return ~ Bert + IR + lagged_return + Surprise, data = Core)
+
+stargazer(simple_tone_SUR, simple_unc_SUR, simple_con_SUR, simple_bert_SUR, column.labels = c(&quot;Tone&quot;, &quot;Unc&quot;, &quot;Con&quot;, &quot;Bert&quot;), header = F)</code></pre>
+<pre><code>## 
+## \begin{table}[!htbp] \centering 
+##   \caption{} 
+##   \label{} 
+## \begin{tabular}{@{\extracolsep{5pt}}lcccc} 
+## \\[-1.8ex]\hline 
+## \hline \\[-1.8ex] 
+##  &amp; \multicolumn{4}{c}{\textit{Dependent variable:}} \\ 
+## \cline{2-5} 
+## \\[-1.8ex] &amp; \multicolumn{4}{c}{abnormal\_return} \\ 
+##  &amp; Tone &amp; Unc &amp; Con &amp; Bert \\ 
+## \\[-1.8ex] &amp; (1) &amp; (2) &amp; (3) &amp; (4)\\ 
+## \hline \\[-1.8ex] 
+##  Tone &amp; 0.024$^{*}$ &amp;  &amp;  &amp;  \\ 
+##   &amp; (0.014) &amp;  &amp;  &amp;  \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  Unc &amp;  &amp; 0.012 &amp;  &amp;  \\ 
+##   &amp;  &amp; (0.020) &amp;  &amp;  \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  Con &amp;  &amp;  &amp; 0.013 &amp;  \\ 
+##   &amp;  &amp;  &amp; (0.034) &amp;  \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  Bert &amp;  &amp;  &amp;  &amp; 0.015 \\ 
+##   &amp;  &amp;  &amp;  &amp; (0.045) \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  IR &amp; 0.0004 &amp; $-$0.001 &amp; $-$0.001 &amp; $-$0.001 \\ 
+##   &amp; (0.001) &amp; (0.001) &amp; (0.001) &amp; (0.001) \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  lagged\_return &amp; $-$0.047 &amp; $-$0.023 &amp; $-$0.018 &amp; $-$0.019 \\ 
+##   &amp; (0.160) &amp; (0.162) &amp; (0.162) &amp; (0.162) \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  Surprise &amp; 0.022$^{**}$ &amp; 0.017 &amp; 0.019$^{*}$ &amp; 0.018$^{*}$ \\ 
+##   &amp; (0.011) &amp; (0.011) &amp; (0.011) &amp; (0.011) \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  Constant &amp; $-$0.005 &amp; $-$0.001 &amp; $-$0.001 &amp; $-$0.013 \\ 
+##   &amp; (0.004) &amp; (0.004) &amp; (0.005) &amp; (0.043) \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+## \hline \\[-1.8ex] 
+## Observations &amp; 76 &amp; 76 &amp; 76 &amp; 76 \\ 
+## R$^{2}$ &amp; 0.084 &amp; 0.049 &amp; 0.046 &amp; 0.046 \\ 
+## Adjusted R$^{2}$ &amp; 0.033 &amp; $-$0.004 &amp; $-$0.007 &amp; $-$0.008 \\ 
+## Residual Std. Error (df = 71) &amp; 0.010 &amp; 0.010 &amp; 0.010 &amp; 0.010 \\ 
+## F Statistic (df = 4; 71) &amp; 1.635 &amp; 0.919 &amp; 0.862 &amp; 0.855 \\ 
+## \hline 
+## \hline \\[-1.8ex] 
+## \textit{Note:}  &amp; \multicolumn{4}{r}{$^{*}$p$&lt;$0.1; $^{**}$p$&lt;$0.05; $^{***}$p$&lt;$0.01} \\ 
+## \end{tabular} 
+## \end{table}</code></pre>
+<pre class="r"><code>simple_tone_DE &lt;- lm(abnormal_return ~ Tone + IR + lagged_return + Surprise + debt_equity, data = Core)
+simple_unc_DE &lt;- lm(abnormal_return ~ Con + IR + lagged_return + Surprise + debt_equity, data = Core)
+simple_con_DE &lt;- lm(abnormal_return ~ Con + IR + lagged_return + Surprise + debt_equity, data = Core)
 simple_bert_DE &lt;- lm(abnormal_return ~ Bert + IR + lagged_return + Surprise + debt_equity, data = Core)
 
-simple_bert_normed &lt;- lm(abnormal_return ~ Bert_normed, data = Core)
-simple_bert_normed_IR &lt;- lm(abnormal_return ~ Bert_normed + IR, data = Core)
-simple_bert_normed_LR &lt;- lm(abnormal_return ~ Bert_normed + IR + lagged_return, data = Core)
-simple_bert_normed_SUR &lt;- lm(abnormal_return ~ Bert_normed + IR + lagged_return + Surprise, data = Core)
-simple_bert_normed_DE &lt;- lm(abnormal_return ~ Bert_normed + IR + lagged_return + Surprise + debt_equity, data = Core)</code></pre>
-<pre class="r"><code>#Interaction Models
-
-interactions_tone &lt;- lm(abnormal_return ~ Tone * debt_equity + IR + lagged_return + Surprise * debt_equity + debt_equity, data = Core)
+stargazer(simple_tone_DE, simple_unc_DE, simple_con_DE, simple_bert_DE, column.labels = c(&quot;Tone&quot;, &quot;Unc&quot;, &quot;Con&quot;, &quot;Bert&quot;), header = F)</code></pre>
+<pre><code>## 
+## \begin{table}[!htbp] \centering 
+##   \caption{} 
+##   \label{} 
+## \begin{tabular}{@{\extracolsep{5pt}}lcccc} 
+## \\[-1.8ex]\hline 
+## \hline \\[-1.8ex] 
+##  &amp; \multicolumn{4}{c}{\textit{Dependent variable:}} \\ 
+## \cline{2-5} 
+## \\[-1.8ex] &amp; \multicolumn{4}{c}{abnormal\_return} \\ 
+##  &amp; Tone &amp; Unc &amp; Con &amp; Bert \\ 
+## \\[-1.8ex] &amp; (1) &amp; (2) &amp; (3) &amp; (4)\\ 
+## \hline \\[-1.8ex] 
+##  Tone &amp; 0.032$^{**}$ &amp;  &amp;  &amp;  \\ 
+##   &amp; (0.015) &amp;  &amp;  &amp;  \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  Con &amp;  &amp; 0.025 &amp; 0.025 &amp;  \\ 
+##   &amp;  &amp; (0.037) &amp; (0.037) &amp;  \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  Bert &amp;  &amp;  &amp;  &amp; 0.003 \\ 
+##   &amp;  &amp;  &amp;  &amp; (0.050) \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  IR &amp; $-$0.0003 &amp; $-$0.001 &amp; $-$0.001 &amp; $-$0.001 \\ 
+##   &amp; (0.001) &amp; (0.001) &amp; (0.001) &amp; (0.001) \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  lagged\_return &amp; $-$0.057 &amp; $-$0.019 &amp; $-$0.019 &amp; $-$0.016 \\ 
+##   &amp; (0.159) &amp; (0.162) &amp; (0.162) &amp; (0.163) \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  Surprise &amp; 0.022$^{**}$ &amp; 0.019$^{*}$ &amp; 0.019$^{*}$ &amp; 0.017 \\ 
+##   &amp; (0.011) &amp; (0.011) &amp; (0.011) &amp; (0.011) \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  debt\_equity &amp; 0.00003 &amp; 0.00002 &amp; 0.00002 &amp; 0.00001 \\ 
+##   &amp; (0.00002) &amp; (0.00002) &amp; (0.00002) &amp; (0.00002) \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  Constant &amp; $-$0.016$^{**}$ &amp; $-$0.008 &amp; $-$0.008 &amp; $-$0.005 \\ 
+##   &amp; (0.008) &amp; (0.009) &amp; (0.009) &amp; (0.045) \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+## \hline \\[-1.8ex] 
+## Observations &amp; 76 &amp; 76 &amp; 76 &amp; 76 \\ 
+## R$^{2}$ &amp; 0.113 &amp; 0.057 &amp; 0.057 &amp; 0.051 \\ 
+## Adjusted R$^{2}$ &amp; 0.050 &amp; $-$0.010 &amp; $-$0.010 &amp; $-$0.017 \\ 
+## Residual Std. Error (df = 70) &amp; 0.010 &amp; 0.010 &amp; 0.010 &amp; 0.010 \\ 
+## F Statistic (df = 5; 70) &amp; 1.792 &amp; 0.853 &amp; 0.853 &amp; 0.756 \\ 
+## \hline 
+## \hline \\[-1.8ex] 
+## \textit{Note:}  &amp; \multicolumn{4}{r}{$^{*}$p$&lt;$0.1; $^{**}$p$&lt;$0.05; $^{***}$p$&lt;$0.01} \\ 
+## \end{tabular} 
+## \end{table}</code></pre>
+<pre class="r"><code>interactions_tone &lt;- lm(abnormal_return ~ Tone * debt_equity + IR + lagged_return + Surprise * debt_equity + debt_equity, data = Core)
 
 interactions_unc&lt;-lm(abnormal_return~Unc*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
 
 interactions_con&lt;-lm(abnormal_return~Con*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
 
-interations_bert &lt;- lm(abnormal_return~Bert*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
+interactions_bert &lt;- lm(abnormal_return~Bert*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
 
-interactions_bert_normed &lt;- lm(abnormal_return~Bert*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)</code></pre>
+stargazer(interactions_tone, interactions_unc, interactions_con, interactions_bert, column.labels = c(&quot;Tone&quot;, &quot;Unc&quot;, &quot;Con&quot;, &quot;Bert&quot;), header = F)</code></pre>
+<pre><code>## 
+## \begin{table}[!htbp] \centering 
+##   \caption{} 
+##   \label{} 
+## \begin{tabular}{@{\extracolsep{5pt}}lcccc} 
+## \\[-1.8ex]\hline 
+## \hline \\[-1.8ex] 
+##  &amp; \multicolumn{4}{c}{\textit{Dependent variable:}} \\ 
+## \cline{2-5} 
+## \\[-1.8ex] &amp; \multicolumn{4}{c}{abnormal\_return} \\ 
+##  &amp; Tone &amp; Unc &amp; Con &amp; Bert \\ 
+## \\[-1.8ex] &amp; (1) &amp; (2) &amp; (3) &amp; (4)\\ 
+## \hline \\[-1.8ex] 
+##  Tone &amp; 0.082 &amp;  &amp;  &amp;  \\ 
+##   &amp; (0.053) &amp;  &amp;  &amp;  \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  Unc &amp;  &amp; 0.143 &amp;  &amp;  \\ 
+##   &amp;  &amp; (0.094) &amp;  &amp;  \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  Con &amp;  &amp;  &amp; 0.147 &amp;  \\ 
+##   &amp;  &amp;  &amp; (0.126) &amp;  \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  Bert &amp;  &amp;  &amp;  &amp; $-$0.095 \\ 
+##   &amp;  &amp;  &amp;  &amp; (0.207) \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  debt\_equity &amp; 0.0001 &amp; 0.0001 &amp; 0.0001 &amp; $-$0.0002 \\ 
+##   &amp; (0.00004) &amp; (0.0001) &amp; (0.0001) &amp; (0.001) \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  IR &amp; $-$0.001 &amp; $-$0.001 &amp; $-$0.001 &amp; $-$0.001 \\ 
+##   &amp; (0.002) &amp; (0.001) &amp; (0.002) &amp; (0.001) \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  lagged\_return &amp; $-$0.154 &amp; $-$0.166 &amp; $-$0.116 &amp; $-$0.086 \\ 
+##   &amp; (0.158) &amp; (0.163) &amp; (0.161) &amp; (0.165) \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  Surprise &amp; 0.305$^{***}$ &amp; 0.356$^{***}$ &amp; 0.310$^{***}$ &amp; 0.279$^{***}$ \\ 
+##   &amp; (0.102) &amp; (0.107) &amp; (0.103) &amp; (0.103) \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  Tone:debt\_equity &amp; $-$0.0001 &amp;  &amp;  &amp;  \\ 
+##   &amp; (0.0002) &amp;  &amp;  &amp;  \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  Unc:debt\_equity &amp;  &amp; $-$0.0003 &amp;  &amp;  \\ 
+##   &amp;  &amp; (0.0003) &amp;  &amp;  \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  Con:debt\_equity &amp;  &amp;  &amp; $-$0.0003 &amp;  \\ 
+##   &amp;  &amp;  &amp; (0.0004) &amp;  \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  Bert:debt\_equity &amp;  &amp;  &amp;  &amp; 0.0002 \\ 
+##   &amp;  &amp;  &amp;  &amp; (0.001) \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  debt\_equity:Surprise &amp; $-$0.001$^{***}$ &amp; $-$0.001$^{***}$ &amp; $-$0.001$^{***}$ &amp; $-$0.001$^{**}$ \\ 
+##   &amp; (0.0002) &amp; (0.0002) &amp; (0.0002) &amp; (0.0002) \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+##  Constant &amp; $-$0.032$^{**}$ &amp; $-$0.041$^{*}$ &amp; $-$0.029 &amp; 0.082 \\ 
+##   &amp; (0.015) &amp; (0.022) &amp; (0.019) &amp; (0.193) \\ 
+##   &amp; &amp; &amp; &amp; \\ 
+## \hline \\[-1.8ex] 
+## Observations &amp; 76 &amp; 76 &amp; 76 &amp; 76 \\ 
+## R$^{2}$ &amp; 0.205 &amp; 0.190 &amp; 0.158 &amp; 0.135 \\ 
+## Adjusted R$^{2}$ &amp; 0.123 &amp; 0.106 &amp; 0.071 &amp; 0.046 \\ 
+## Residual Std. Error (df = 68) &amp; 0.010 &amp; 0.010 &amp; 0.010 &amp; 0.010 \\ 
+## F Statistic (df = 7; 68) &amp; 2.500$^{**}$ &amp; 2.272$^{**}$ &amp; 1.819$^{*}$ &amp; 1.514 \\ 
+## \hline 
+## \hline \\[-1.8ex] 
+## \textit{Note:}  &amp; \multicolumn{4}{r}{$^{*}$p$&lt;$0.1; $^{**}$p$&lt;$0.05; $^{***}$p$&lt;$0.01} \\ 
+## \end{tabular} 
+## \end{table}</code></pre>
+<pre class="r"><code>trial_tone&lt;-lm(abnormal_return~Tone + IR + lagged_return + Surprise + debt_equity, data=Core)
+trial_unc&lt;-lm(abnormal_return~Unc + IR + lagged_return + Surprise + debt_equity, data=Core)
+trial_con&lt;-lm(abnormal_return~Con + IR + lagged_return + Surprise + debt_equity, data=Core)
+
+stargazer(trial_tone, trial_unc, trial_con,
+          column.labels = c(&quot;Tone&quot;, &quot;Unc&quot;, &quot;Con&quot;), header = F)</code></pre>
 </div>
-<div id="sec-bibliography" class="section level2">
-<h2>Bibliography</h2>
-<p>Möller, R., &amp; Reichmann, D. (2021). ECB language and stock
-returns–A textual analysis of ECB press conferences. The Quarterly
-Review of Economics and Finance, 80, 590-604.</p>
+<div id="sec-bibliography" class="section level2 unnumbered">
+<h2 class="unnumbered">Bibliography</h2>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Möller2021" class="csl-entry">
+Möller, Rouven, and Doron Reichmann. 2021b. <span>“ECB Language and
+Stock Returns <span></span> a Textual Analysis of ECB Press
+Conferences.”</span> <em>The Quarterly Review of Economics and
+Finance</em> 80 (May): 590–604. <a href="https://doi.org/10.1016/j.qref.2021.04.003">https://doi.org/10.1016/j.qref.2021.04.003</a>.
+</div>
+<div id="ref-möller2021" class="csl-entry">
+———. 2021a. <span>“ECB Language and Stock Returns <span></span> a
+Textual Analysis of ECB Press Conferences.”</span> <em>The Quarterly
+Review of Economics and Finance</em> 80 (May): 590–604. <a href="https://doi.org/10.1016/j.qref.2021.04.003">https://doi.org/10.1016/j.qref.2021.04.003</a>.
+</div>
+</div>
 </div>
 
 

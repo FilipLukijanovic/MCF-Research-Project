@@ -1,29 +1,48 @@
 ---
-title: "Does FED Communication cause immediate and abnormal returns stock market?"
-subtitle: "A sentiment analysis on the S&P 500 Stock Market Index"
 author:
-  - Matthias Farngruber
-  - Matriculation Number 1
-  - Filip Lukijanovic
-  - 11776896
-  - Peter Prlleshi
-  - Matriculation Number 3
+- Matthias Farngruber
+- Matriculation Number 1
+- Filip Lukijanovic
+- 11776896
+- Peter Prlleshi
+- Matriculation Number 3
+subtitle: A sentiment analysis on the S&P 500 Stock Market Index
 output:
+  pdf_document:
+    latex_engine: pdflatex
   html_document: default
-  pdf_document: default
+title: "Does FED Communication cause immediate and abnormal returns stock market?"
+nocite: '@*'
+bibliography: references.bib
 ---
 
+```{=tex}
+\tableofcontents
+\pagebreak
+```
 ## Abstract {#sec-abstract}
+
+\pagebreak
 
 ## Literature Review {#sec-literature-review}
 
-The following research project is mostly based on the work done by
+The following research project is mostly based on the work done by Möller and Reichmann (2021) in the field of sentiment analysis. In their paper "ECB Language and Stock Returns - A Textual analysis of ECB Press Conferences" they explore the impact of the language used by the ECB in their regular press conferences on stock returns in the Euro Area.
+
+They achieve this by mining the statements and ranking the sentiments of each statement based on general tone, uncertainty and constraint. Once this is classified, the researchers then cross-check the high frequency intraday data for Euro Area stock returns on each statement day, by employing the technique of an event study. This allows them to see how stock returns reacted to statements by the ECB at whatever point they wanted to examine them.
+
+As mentioned, the researchers focused on tone, uncertainty and constraining language for the sentiment analysis. Tone captures the overall language - or the overarching narrative - of a statement, uncertainty measures how ambiguous a statement may be and constraining language quantifies how constraining the ECB communicates to be in the future. Of course the researchers did not read through every single statement by the ECB, instead, they employed a dictionary-based sentiment mining approach that considered grammatical and syntactical cues to analyze the sentiment expressed in ECB press conferences. Afterwards they scored each statement with regards to each category by employing heuristic-adjusted sentiment scores based on word lists used in previous studies. @möller2021
 
 ## Data {#sec-data}
 
-XYZ
+The data used for this project consists of the following:
 
-```{r setup, include=FALSE}
+-   Federal Reserve (FED) Meetings: The U.S. American FED holds regular meetings multiple times per year where they talk about the current economic situation and what the plan is going forwards. This leaves us with 76 statements over 10 years from January 30th 2013 until July 26th 2023.
+
+-   Standard & Poor's 500 stock market index pricing: We cross-check the statements and their nature with the price of the S&P 500 stock market index on each day of a statement. This index is of particular interest since it incorporates 500 U.S. american companies representing a large part of the whole market itself. This means that we can use the S&P 500 as a proxy for how the market behaves at a given day.
+
+## Methodology {#sec-methodology}
+
+```{r library setup, include=FALSE}
 library(readxl)
 library(tidyr)
 library(zoo)
@@ -137,87 +156,76 @@ Core$Surprise<-IR_Surprises
 Core$debt_equity<- SPX_DE$Net_Debt_Share
 ```
 
-```{r Models based on Tone, results='asis'}
-#All models based on Tone
-
+```{r Simple Models, results='asis'}
 simple_tone <- lm(abnormal_return ~ Tone, data = Core)
-simple_tone_IR <- lm(abnormal_return ~ Tone + IR, data = Core)
-simple_tone_LR <- lm(abnormal_return ~ Tone + IR + lagged_return, data = Core)
-simple_tone_SUR <- lm(abnormal_return ~ Tone + IR + lagged_return + Surprise, data = Core)
-simple_tone_DE <- lm(abnormal_return ~ Tone + IR + lagged_return + Surprise + debt_equity, data = Core)
-```
-
-```{r Models based on Unc}
-#All models based on Unc
 simple_unc <- lm(abnormal_return ~ Unc, data = Core)
-simple_unc_IR <- lm(abnormal_return ~ Unc + IR, data = Core)
-simple_unc_LR <- lm(abnormal_return ~ Unc + IR + lagged_return, data = Core)
-simple_unc_SUR <- lm(abnormal_return ~ Unc + IR + lagged_return + Surprise, data = Core)
-simple_unc_DE <- lm(abnormal_return ~ Con + IR + lagged_return + Surprise + debt_equity, data = Core)
-```
-
-```{r Models based on Con}
-#All models based on Con
 simple_con <- lm(abnormal_return ~ Con, data = Core)
-simple_con_IR <- lm(abnormal_return ~ Con + IR, data = Core)
-simple_con_LR <- lm(abnormal_return ~ Con + IR + lagged_return, data = Core)
-simple_con_SUR <- lm(abnormal_return ~ Con + IR + lagged_return + Surprise, data = Core)
-simple_con_DE <- lm(abnormal_return ~ Con + IR + lagged_return + Surprise + debt_equity, data = Core)
+simple_bert <- lm(abnormal_return ~ Bert, data = Core)
+
+stargazer(simple_tone, simple_con, simple_unc, simple_bert, header = F)
+
 ```
 
-```{r Models based on Bert and Bert normed}
-#All models based on Bert and Bert_normed
-simple_bert <- lm(abnormal_return ~ Bert, data = Core)
+\pagebreak
+
+```{r Models including IR, echo=TRUE}
+simple_tone_IR <- lm(abnormal_return ~ Tone + IR, data = Core)
+simple_unc_IR <- lm(abnormal_return ~ Unc + IR, data = Core)
+simple_con_IR <- lm(abnormal_return ~ Con + IR, data = Core)
 simple_bert_IR <- lm(abnormal_return ~ Bert + IR, data = Core)
+
+stargazer(simple_tone_IR, header = F)
+```
+
+```{r Models including LR}
+simple_tone_LR <- lm(abnormal_return ~ Tone + IR + lagged_return, data = Core)
+simple_unc_LR <- lm(abnormal_return ~ Unc + IR + lagged_return, data = Core)
+simple_con_LR <- lm(abnormal_return ~ Con + IR + lagged_return, data = Core)
 simple_bert_LR <- lm(abnormal_return ~ Bert + IR + lagged_return, data = Core)
+
+stargazer(simple_tone_LR, simple_con_LR, simple_unc_LR, simple_bert_LR, column.labels = c("Tone", "Unc", "Con", "Bert"), header = F)
+```
+
+```{r Models including SUR}
+simple_tone_SUR <- lm(abnormal_return ~ Tone + IR + lagged_return + Surprise, data = Core)
+simple_unc_SUR <- lm(abnormal_return ~ Unc + IR + lagged_return + Surprise, data = Core)
+simple_con_SUR <- lm(abnormal_return ~ Con + IR + lagged_return + Surprise, data = Core)
 simple_bert_SUR <- lm(abnormal_return ~ Bert + IR + lagged_return + Surprise, data = Core)
+
+stargazer(simple_tone_SUR, simple_unc_SUR, simple_con_SUR, simple_bert_SUR, column.labels = c("Tone", "Unc", "Con", "Bert"), header = F)
+
+```
+
+```{r Models including DE}
+simple_tone_DE <- lm(abnormal_return ~ Tone + IR + lagged_return + Surprise + debt_equity, data = Core)
+simple_unc_DE <- lm(abnormal_return ~ Con + IR + lagged_return + Surprise + debt_equity, data = Core)
+simple_con_DE <- lm(abnormal_return ~ Con + IR + lagged_return + Surprise + debt_equity, data = Core)
 simple_bert_DE <- lm(abnormal_return ~ Bert + IR + lagged_return + Surprise + debt_equity, data = Core)
 
-simple_bert_normed <- lm(abnormal_return ~ Bert_normed, data = Core)
-simple_bert_normed_IR <- lm(abnormal_return ~ Bert_normed + IR, data = Core)
-simple_bert_normed_LR <- lm(abnormal_return ~ Bert_normed + IR + lagged_return, data = Core)
-simple_bert_normed_SUR <- lm(abnormal_return ~ Bert_normed + IR + lagged_return + Surprise, data = Core)
-simple_bert_normed_DE <- lm(abnormal_return ~ Bert_normed + IR + lagged_return + Surprise + debt_equity, data = Core)
-```
-
-```{r "Trial", eval=FALSE, include=FALSE, results='asis'}
-
-trial_tone<-lm(abnormal_return~Tone + IR + lagged_return + Surprise + debt_equity, data=Core)
-trial_unc<-lm(abnormal_return~Unc + IR + lagged_return + Surprise + debt_equity, data=Core)
-trial_con<-lm(abnormal_return~Con + IR + lagged_return + Surprise + debt_equity, data=Core)
-
-stargazer(simple_tone, simple_con, simple_unc, 
-          column.labels = c("Tone", "Unc", "Con"), header = F)
-stargazer(trial_tone, trial_unc, trial_con,
-          column.labels = c("Tone", "Unc", "Con"), header = F)
-
+stargazer(simple_tone_DE, simple_unc_DE, simple_con_DE, simple_bert_DE, column.labels = c("Tone", "Unc", "Con", "Bert"), header = F)
 
 ```
 
-```{r Models including interaction terms}
-#Interaction Models
-
+```{r}
 interactions_tone <- lm(abnormal_return ~ Tone * debt_equity + IR + lagged_return + Surprise * debt_equity + debt_equity, data = Core)
 
 interactions_unc<-lm(abnormal_return~Unc*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
 
 interactions_con<-lm(abnormal_return~Con*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
 
-interations_bert <- lm(abnormal_return~Bert*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
+interactions_bert <- lm(abnormal_return~Bert*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
 
-interactions_bert_normed <- lm(abnormal_return~Bert*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
-
+stargazer(interactions_tone, interactions_unc, interactions_con, interactions_bert, column.labels = c("Tone", "Unc", "Con", "Bert"), header = F)
 
 ```
 
-```{r Stargazer Tables, eval=FALSE, include=FALSE}
-#Tables
-stargazer(simple_tone, simple_tone_IR, simple_tone_LR, simple_tone_SUR, simple_tone_DE, interactions_tone, column.labels = c("Tone", "Cons", "Unc"), header = FALSE)
+```{r "Trial", results='asis'}
+trial_tone<-lm(abnormal_return~Tone + IR + lagged_return + Surprise + debt_equity, data=Core)
+trial_unc<-lm(abnormal_return~Unc + IR + lagged_return + Surprise + debt_equity, data=Core)
+trial_con<-lm(abnormal_return~Con + IR + lagged_return + Surprise + debt_equity, data=Core)
 
-
-
+stargazer(trial_tone, trial_unc, trial_con,
+          column.labels = c("Tone", "Unc", "Con"), header = F)
 ```
 
 ## Bibliography {#sec-bibliography}
-
-Möller, R., & Reichmann, D. (2021). ECB language and stock returns--A textual analysis of ECB press conferences. The Quarterly Review of Economics and Finance, 80, 590-604.
