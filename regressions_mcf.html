@@ -9,11 +9,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Peter Prlleshi, Filip Lukijanovic, Matthias Farngruber" />
+<meta name="author" content="Matthias Farngruber" />
+<meta name="author" content="Matriculation Number 1" />
+<meta name="author" content="Filip Lukijanovic" />
+<meta name="author" content="11776896" />
+<meta name="author" content="Peter Prlleshi" />
+<meta name="author" content="Matriculation Number 3" />
 
-<meta name="date" content="2024-01-24" />
 
-<title>MCF Regressions</title>
+<title>Does FED Communication cause immediate and abnormal returns stock market?</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -350,140 +354,74 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">MCF Regressions</h1>
-<h4 class="author">Peter Prlleshi, Filip Lukijanovic, Matthias
-Farngruber</h4>
-<h4 class="date">2024-01-24</h4>
+<h1 class="title toc-ignore">Does FED Communication cause immediate and
+abnormal returns stock market?</h1>
+<h3 class="subtitle">A sentiment analysis on the S&amp;P 500 Stock
+Market Index</h3>
+<h4 class="author">Matthias Farngruber</h4>
+<h4 class="author">Matriculation Number 1</h4>
+<h4 class="author">Filip Lukijanovic</h4>
+<h4 class="author">11776896</h4>
+<h4 class="author">Peter Prlleshi</h4>
+<h4 class="author">Matriculation Number 3</h4>
 
 </div>
 
 
-<pre class="r"><code>setwd(dirname(rstudioapi::getSourceEditorContext()$path))
-path&lt;-dirname(rstudioapi::getSourceEditorContext()$path)
+<div id="sec-abstract" class="section level2">
+<h2>Abstract</h2>
+<p>XYZ</p>
+</div>
+<div id="sec-literature-review" class="section level2">
+<h2>Literature Review</h2>
+<p>XYZ</p>
+</div>
+<div id="sec-data" class="section level2">
+<h2>Data</h2>
+<p>XYZ</p>
+<pre class="r"><code>#All models based on Tone
 
-Core &lt;- read.csv(&quot;./Statement_SPX_matched.csv&quot;)
-Core$Date &lt;- as.Date(Core$Date, format = &quot;%d/%m/%Y&quot;) # converting the date column
-FilterDates&lt;-c(Core$Date)
-Core&lt;- Core[,-5]
-
-#################################################################################
-Fed_Futures &lt;- read_excel(&quot;./FED_FORWARDS.xlsx&quot;)
-Fed_Futures$Date &lt;- as.Date(Fed_Futures$Date, format=&quot;%Y-%m-%d %H:%M:%S&quot;)
-
-Fed_Futures&lt;- Fed_Futures %&gt;% 
-  mutate(Date = as.Date(Date)) %&gt;%  
-  complete(Date = seq.Date(min(Date), max(Date), by=&quot;day&quot;))
-      
-Fed_Futures&lt;-na.locf(Fed_Futures, fromLast = FALSE)
-Fed_Futures&lt;- Fed_Futures[Fed_Futures$Date %in% FilterDates,]
-
-#####################################################################################
-
-IR &lt;- read.csv(&quot;./DFF.csv&quot;)
-IR$Date &lt;- as.Date(IR$DATE, format = &quot;%Y-%m-%d&quot;) # converting the date column
-
-IR&lt;- IR %&gt;% 
-  mutate(Date = as.Date(Date)) %&gt;%  
-  complete(Date = seq.Date(min(Date), max(Date), by=&quot;day&quot;))
-
-IR &lt;-na.locf(IR, fromLast = FALSE)
-IR &lt;- IR[IR$Date %in% FilterDates,][,-1]
-
-#########################################################################
-
-SPX_DE &lt;- read_excel(&quot;./SPX_DE.xlsx&quot;)
-
-SPX_DE$Date &lt;- as.Date(SPX_DE$Date, format=&quot;%Y-%m-%d %H:%M:%S&quot;)
-
-SPX_DE&lt;- SPX_DE %&gt;% 
-  mutate(Date = as.Date(Date)) %&gt;%  
-  complete(Date = seq.Date(min(Date), max(Date), by=&quot;day&quot;))
-
-SPX_DE&lt;-na.locf(SPX_DE, fromLast = FALSE)
-SPX_DE&lt;- SPX_DE[SPX_DE$Date %in% FilterDates,]
-
-##################################################################################
-SPX_price &lt;- read.csv(&quot;./HistoricalPrices.csv&quot;, header = TRUE)
-SPX_price &lt;- SPX_price[,c(1,5)]# choosing only the closing price each day
-
-SPX_price$Date&lt;-as.Date(SPX_price$Date, format = &quot;%m/%d/%y&quot;)# converting the date column
-
-SPX_price&lt;-na.locf(SPX_price, fromLast = FALSE)
-
-SPX_return &lt;- SPX_price %&gt;%
-  arrange(Date) %&gt;% # Make sure the data is sorted by date in ascending order
-  mutate(Daily_Return = log(Close) - log(lag(Close))) 
-
-days_in_year &lt;- 252
-# Calculate rolling 3-year average return
-SPX_return$Rolling_3Y_Avg_Return &lt;- rollapply(SPX_return$Daily_Return, 
-                                             width = 3 * days_in_year, 
-                                             FUN = mean, 
-                                             by.column = TRUE, 
-                                             fill = NA, 
-                                             align = &#39;right&#39;)
-
-
-SPX_return$abnormal_returns&lt;-SPX_return$Daily_Return-SPX_return$Rolling_3Y_Avg_Return
-
-SPX_return$lagged_return&lt;- lag(SPX_return$Daily_Return)
-
-SPX_return&lt;- SPX_return %&gt;% 
-  mutate(Date = as.Date(Date)) %&gt;%  
-  complete(Date = seq.Date(min(Date), max(Date), by=&quot;day&quot;))
-
-SPX_return&lt;- SPX_return[SPX_return$Date %in% FilterDates,]
-
-######################################## SURPRISES ###########################
-
-IR_Lead &lt;- read.csv(&quot;./DFF.csv&quot;)
-IR_Lead$Date &lt;- as.Date(IR_Lead$DATE, format = &quot;%Y-%m-%d&quot;) # converting the date column
-IR_Lead$DFF&lt;- lead(IR_Lead$DFF)
-
-IR_Lead&lt;- IR_Lead %&gt;% 
-  mutate(Date = as.Date(Date)) %&gt;%  
-  complete(Date = seq.Date(min(Date), max(Date), by=&quot;day&quot;))
-
-IR_Lead &lt;-na.locf(IR_Lead, fromLast = FALSE)
-IR_Lead &lt;- IR_Lead[IR_Lead$Date %in% FilterDates,][,-1]
-
-IR_Surprises&lt;- IR_Lead$DFF-Fed_Futures$FORWARD
-
-######################################################################################
-########################### CONSTRUCTION OF CORE DATASET FOR REGRESSIONS #############
-######################################################################################
-
-
-
-Core$return &lt;- SPX_return$Daily_Return
-Core$lagged_return &lt;- as.numeric(SPX_return$lagged_return)
-Core$abnormal_return &lt;- as.numeric(SPX_return$abnormal_returns)
-Core$IR&lt;- IR_Lead$DFF
-Core$Surprise&lt;-IR_Surprises
-Core$debt_equity&lt;- SPX_DE$Net_Debt_Share</code></pre>
-<pre class="r"><code>simple_tone &lt;- lm(abnormal_return ~ Tone, data = Core)
-simple_tone</code></pre>
-<p>Call: lm(formula = abnormal_return ~ Tone, data = Core)</p>
-<p>Coefficients: (Intercept) Tone<br />
--0.002053 0.012761</p>
-<pre class="r"><code>simple_unc &lt;- lm(abnormal_return ~ Unc, data = Core)
+simple_tone &lt;- lm(abnormal_return ~ Tone, data = Core)
+simple_tone_IR &lt;- lm(abnormal_return ~ Tone + IR, data = Core)
+simple_tone_LR &lt;- lm(abnormal_return ~ Tone + IR + lagged_return, data = Core)
+simple_tone_SUR &lt;- lm(abnormal_return ~ Tone + IR + lagged_return + Surprise, data = Core)
+simple_tone_DE &lt;- lm(abnormal_return ~ Tone + IR + lagged_return + Surprise + debt_equity, data = Core)</code></pre>
+<pre class="r"><code>#All models based on Unc
+simple_unc &lt;- lm(abnormal_return ~ Unc, data = Core)
+simple_unc_IR &lt;- lm(abnormal_return ~ Unc + IR, data = Core)
+simple_unc_LR &lt;- lm(abnormal_return ~ Unc + IR + lagged_return, data = Core)
+simple_unc_SUR &lt;- lm(abnormal_return ~ Unc + IR + lagged_return + Surprise, data = Core)
+simple_unc_DE &lt;- lm(abnormal_return ~ Con + IR + lagged_return + Surprise + debt_equity, data = Core)</code></pre>
+<pre class="r"><code>#All models based on Con
 simple_con &lt;- lm(abnormal_return ~ Con, data = Core)
-interactions_tone&lt;-lm(abnormal_return~Tone*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
+simple_con_IR &lt;- lm(abnormal_return ~ Con + IR, data = Core)
+simple_con_LR &lt;- lm(abnormal_return ~ Con + IR + lagged_return, data = Core)
+simple_con_SUR &lt;- lm(abnormal_return ~ Con + IR + lagged_return + Surprise, data = Core)
+simple_con_DE &lt;- lm(abnormal_return ~ Con + IR + lagged_return + Surprise + debt_equity, data = Core)</code></pre>
+<pre class="r"><code>#All models based on Bert and Bert_normed
+simple_bert &lt;- lm(abnormal_return ~ Bert, data = Core)
+simple_bert_IR &lt;- lm(abnormal_return ~ Bert + IR, data = Core)
+simple_bert_LR &lt;- lm(abnormal_return ~ Bert + IR + lagged_return, data = Core)
+simple_bert_SUR &lt;- lm(abnormal_return ~ Bert + IR + lagged_return + Surprise, data = Core)
+simple_bert_DE &lt;- lm(abnormal_return ~ Bert + IR + lagged_return + Surprise + debt_equity, data = Core)
+
+simple_bert_normed &lt;- lm(abnormal_return ~ Bert_normed, data = Core)
+simple_bert_normed_IR &lt;- lm(abnormal_return ~ Bert_normed + IR, data = Core)
+simple_bert_normed_LR &lt;- lm(abnormal_return ~ Bert_normed + IR + lagged_return, data = Core)
+simple_bert_normed_SUR &lt;- lm(abnormal_return ~ Bert_normed + IR + lagged_return + Surprise, data = Core)
+simple_bert_normed_DE &lt;- lm(abnormal_return ~ Bert_normed + IR + lagged_return + Surprise + debt_equity, data = Core)</code></pre>
+<pre class="r"><code>#Interaction Models
+
+interactions_tone &lt;- lm(abnormal_return ~ Tone * debt_equity + IR + lagged_return + Surprise * debt_equity + debt_equity, data = Core)
+
 interactions_unc&lt;-lm(abnormal_return~Unc*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
+
 interactions_con&lt;-lm(abnormal_return~Con*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
 
-stargazer(simple_tone, simple_con, simple_unc, 
-          column.labels = c(&quot;Tone&quot;, &quot;Unc&quot;, &quot;Con&quot;), header = FALSE)</code></pre>
-<pre class="r"><code>#Template for stargazer stargazer(interactions_tone, interactions_unc, interactions_con,
-#column.labels = c(&quot;Tone&quot;, &quot;Unc&quot;, &quot;Con&quot;), header = F) abc</code></pre>
-<pre class="r"><code>trial_tone&lt;-lm(abnormal_return~Tone + IR + lagged_return + Surprise + debt_equity, data=Core)
-trial_unc&lt;-lm(abnormal_return~Unc + IR + lagged_return + Surprise + debt_equity, data=Core)
-trial_con&lt;-lm(abnormal_return~Con + IR + lagged_return + Surprise + debt_equity, data=Core)
+interations_bert &lt;- lm(abnormal_return~Bert*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
 
-stargazer(simple_tone, simple_con, simple_unc, 
-          column.labels = c(&quot;Tone&quot;, &quot;Unc&quot;, &quot;Con&quot;), header = F)</code></pre>
-<pre class="r"><code>stargazer(trial_tone, trial_unc, trial_con,
-          column.labels = c(&quot;Tone&quot;, &quot;Unc&quot;, &quot;Con&quot;), header = F)</code></pre>
+interactions_bert_normed &lt;- lm(abnormal_return~Bert*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)</code></pre>
+</div>
 
 
 

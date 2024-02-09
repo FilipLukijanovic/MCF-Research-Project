@@ -1,11 +1,29 @@
 ---
-title: "MCF Regressions"
-author: "Peter Prlleshi, Filip Lukijanovic, Matthias Farngruber"
-date: "2024-01-24"
+title: "Does FED Communication cause immediate and abnormal returns stock market?"
+subtitle: "A sentiment analysis on the S&P 500 Stock Market Index"
+author:
+  - Matthias Farngruber
+  - Matriculation Number 1
+  - Filip Lukijanovic
+  - 11776896
+  - Peter Prlleshi
+  - Matriculation Number 3
 output:
   html_document: default
   pdf_document: default
 ---
+
+## Abstract {#sec-abstract}
+
+XYZ
+
+## Literature Review {#sec-literature-review}
+
+XYZ
+
+## Data {#sec-data}
+
+XYZ
 
 ```{r setup, include=FALSE}
 library(readxl)
@@ -16,17 +34,15 @@ library(stargazer)
 library(lmtest)
 ```
 
-
-
-```{r}
+```{r include=FALSE}
 
 setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 path<-dirname(rstudioapi::getSourceEditorContext()$path)
 
-Core <- read.csv("./Statement_SPX_matched.csv")
+Core <- read_excel("./SENTIMENTS_FOMC_FINAL_with_BERT.xlsx")
 Core$Date <- as.Date(Core$Date, format = "%d/%m/%Y") # converting the date column
 FilterDates<-c(Core$Date)
-Core<- Core[,-5]
+Core <- Core[, -2]
 
 #################################################################################
 Fed_Futures <- read_excel("./FED_FORWARDS.xlsx")
@@ -115,36 +131,58 @@ IR_Surprises<- IR_Lead$DFF-Fed_Futures$FORWARD
 ########################### CONSTRUCTION OF CORE DATASET FOR REGRESSIONS #############
 ######################################################################################
 
-
-
 Core$return <- SPX_return$Daily_Return
 Core$lagged_return <- as.numeric(SPX_return$lagged_return)
 Core$abnormal_return <- as.numeric(SPX_return$abnormal_returns)
 Core$IR<- IR_Lead$DFF
 Core$Surprise<-IR_Surprises
 Core$debt_equity<- SPX_DE$Net_Debt_Share
-
 ```
 
 ```{r, results='asis'}
+#All models based on Tone
 
 simple_tone <- lm(abnormal_return ~ Tone, data = Core)
-simple_tone
-simple_unc <- lm(abnormal_return ~ Unc, data = Core)
-simple_con <- lm(abnormal_return ~ Con, data = Core)
-interactions_tone<-lm(abnormal_return~Tone*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
-interactions_unc<-lm(abnormal_return~Unc*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
-interactions_con<-lm(abnormal_return~Con*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
-
-stargazer(simple_tone, simple_con, simple_unc, 
-          column.labels = c("Tone", "Unc", "Con"), header = FALSE)
-#Template for stargazer stargazer(interactions_tone, interactions_unc, interactions_con,
-#column.labels = c("Tone", "Unc", "Con"), header = F) abc
-
-
+simple_tone_IR <- lm(abnormal_return ~ Tone + IR, data = Core)
+simple_tone_LR <- lm(abnormal_return ~ Tone + IR + lagged_return, data = Core)
+simple_tone_SUR <- lm(abnormal_return ~ Tone + IR + lagged_return + Surprise, data = Core)
+simple_tone_DE <- lm(abnormal_return ~ Tone + IR + lagged_return + Surprise + debt_equity, data = Core)
 ```
 
-```{r, results='asis'}
+```{r}
+#All models based on Unc
+simple_unc <- lm(abnormal_return ~ Unc, data = Core)
+simple_unc_IR <- lm(abnormal_return ~ Unc + IR, data = Core)
+simple_unc_LR <- lm(abnormal_return ~ Unc + IR + lagged_return, data = Core)
+simple_unc_SUR <- lm(abnormal_return ~ Unc + IR + lagged_return + Surprise, data = Core)
+simple_unc_DE <- lm(abnormal_return ~ Con + IR + lagged_return + Surprise + debt_equity, data = Core)
+```
+
+```{r}
+#All models based on Con
+simple_con <- lm(abnormal_return ~ Con, data = Core)
+simple_con_IR <- lm(abnormal_return ~ Con + IR, data = Core)
+simple_con_LR <- lm(abnormal_return ~ Con + IR + lagged_return, data = Core)
+simple_con_SUR <- lm(abnormal_return ~ Con + IR + lagged_return + Surprise, data = Core)
+simple_con_DE <- lm(abnormal_return ~ Con + IR + lagged_return + Surprise + debt_equity, data = Core)
+```
+
+```{r}
+#All models based on Bert and Bert_normed
+simple_bert <- lm(abnormal_return ~ Bert, data = Core)
+simple_bert_IR <- lm(abnormal_return ~ Bert + IR, data = Core)
+simple_bert_LR <- lm(abnormal_return ~ Bert + IR + lagged_return, data = Core)
+simple_bert_SUR <- lm(abnormal_return ~ Bert + IR + lagged_return + Surprise, data = Core)
+simple_bert_DE <- lm(abnormal_return ~ Bert + IR + lagged_return + Surprise + debt_equity, data = Core)
+
+simple_bert_normed <- lm(abnormal_return ~ Bert_normed, data = Core)
+simple_bert_normed_IR <- lm(abnormal_return ~ Bert_normed + IR, data = Core)
+simple_bert_normed_LR <- lm(abnormal_return ~ Bert_normed + IR + lagged_return, data = Core)
+simple_bert_normed_SUR <- lm(abnormal_return ~ Bert_normed + IR + lagged_return + Surprise, data = Core)
+simple_bert_normed_DE <- lm(abnormal_return ~ Bert_normed + IR + lagged_return + Surprise + debt_equity, data = Core)
+```
+
+```{r eval=FALSE, include=FALSE, results='asis'}
 
 trial_tone<-lm(abnormal_return~Tone + IR + lagged_return + Surprise + debt_equity, data=Core)
 trial_unc<-lm(abnormal_return~Unc + IR + lagged_return + Surprise + debt_equity, data=Core)
@@ -154,6 +192,30 @@ stargazer(simple_tone, simple_con, simple_unc,
           column.labels = c("Tone", "Unc", "Con"), header = F)
 stargazer(trial_tone, trial_unc, trial_con,
           column.labels = c("Tone", "Unc", "Con"), header = F)
+
+
+```
+
+```{r}
+#Interaction Models
+
+interactions_tone <- lm(abnormal_return ~ Tone * debt_equity + IR + lagged_return + Surprise * debt_equity + debt_equity, data = Core)
+
+interactions_unc<-lm(abnormal_return~Unc*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
+
+interactions_con<-lm(abnormal_return~Con*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
+
+interations_bert <- lm(abnormal_return~Bert*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
+
+interactions_bert_normed <- lm(abnormal_return~Bert*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
+
+
+```
+
+```{r eval=FALSE, include=FALSE}
+#Tables
+stargazer(simple_tone, simple_tone_IR, simple_tone_LR, simple_tone_SUR, simple_tone_DE, interactions_tone, column.labels = c("Tone", "Cons", "Unc"), header = FALSE)
+
 
 
 ```
