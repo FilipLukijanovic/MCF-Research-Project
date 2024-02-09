@@ -162,19 +162,21 @@ simple_unc <- lm(abnormal_return ~ Unc, data = Core)
 simple_con <- lm(abnormal_return ~ Con, data = Core)
 simple_bert <- lm(abnormal_return ~ Bert, data = Core)
 
-stargazer(simple_tone, simple_con, simple_unc, simple_bert, header = F)
+stargazer(simple_tone, simple_con, simple_unc, simple_bert, column.labels = c("Tone", "Unc", "Con", "Bert"), header = F)
 
 ```
 
 \pagebreak
 
 ```{r Models including IR, echo=TRUE}
-simple_tone_IR <- lm(abnormal_return ~ Tone + IR, data = Core)
-simple_unc_IR <- lm(abnormal_return ~ Unc + IR, data = Core)
-simple_con_IR <- lm(abnormal_return ~ Con + IR, data = Core)
-simple_bert_IR <- lm(abnormal_return ~ Bert + IR, data = Core)
+simple_tone_IR <- lm(abnormal_return~Tone + IR, data = Core)
+simple_unc_IR <- lm(abnormal_return~Unc + IR, data = Core)
+simple_con_IR <- lm(abnormal_return~Con + IR, data = Core)
+simple_bert_IR <- lm(abnormal_return~Bert + IR, data = Core)
 
-stargazer(simple_tone_IR, header = F)
+stargazer(simple_bert_IR, simple_bert_IR, simple_bert_IR, simple_bert_IR,
+          column.labels = c("Tone", "Unc", "Con", "Bert"), header = F)
+
 ```
 
 ```{r Models including LR}
@@ -223,9 +225,10 @@ stargazer(interactions_tone, interactions_unc, interactions_con, interactions_be
 trial_tone<-lm(abnormal_return~Tone + IR + lagged_return + Surprise + debt_equity, data=Core)
 trial_unc<-lm(abnormal_return~Unc + IR + lagged_return + Surprise + debt_equity, data=Core)
 trial_con<-lm(abnormal_return~Con + IR + lagged_return + Surprise + debt_equity, data=Core)
+trial_bert<-lm(abnormal_return~Bert + IR + lagged_return + Surprise + debt_equity, data=Core)
 
-stargazer(trial_tone, trial_unc, trial_con,
-          column.labels = c("Tone", "Unc", "Con"), header = F)
+stargazer(trial_tone, trial_unc, trial_con, trial_bert,
+          column.labels = c("Tone", "Unc", "Con", "Bert"), header = F)
 ```
 
 ## Bibliography {#sec-bibliography}
