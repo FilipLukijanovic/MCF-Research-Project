@@ -1,10 +1,10 @@
 ---
 title: "MCF Regressions"
-author: "Peter Prlleshi"
+author: "Peter Prlleshi, Filip Lukijanovic, Matthias Farngruber"
 date: "2024-01-24"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -129,6 +129,7 @@ Core$debt_equity<- SPX_DE$Net_Debt_Share
 ```{r, results='asis'}
 
 simple_tone <- lm(abnormal_return ~ Tone, data = Core)
+simple_tone
 simple_unc <- lm(abnormal_return ~ Unc, data = Core)
 simple_con <- lm(abnormal_return ~ Con, data = Core)
 interactions_tone<-lm(abnormal_return~Tone*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
