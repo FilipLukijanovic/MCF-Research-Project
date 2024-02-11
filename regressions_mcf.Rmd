@@ -242,11 +242,9 @@ library(BMS)
 # Defining the Model
 abnormal_return_model <- Core$abnormal_return ~ Core$Tone + Core$Unc + Core$Con + Core$Bert + Core$IR + Core$lagged_return + Core$Surprise + Core$debt_equity
 
-# 
+# Doing the BMA itself
 bms_results <- bms(abnormal_return_model)
 
-# Zeige die Ergebnisse
-summary(bms_results)
 
 
 ```
