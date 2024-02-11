@@ -231,4 +231,25 @@ stargazer(trial_tone, trial_unc, trial_con, trial_bert,
           column.labels = c("Tone", "Unc", "Con", "Bert"), header = F)
 ```
 
+## BMA 
+
+After regressing everything and getting the results we do a final check via Baysian Model Averaging, where we can see which of the Variables from our Core data set truly are important to abnormal returns. This methodology is to check which variables have variable importance in a regression.
+```{r}
+install.packages("BMS")
+library(BMS)
+
+
+# Defining the Model
+abnormal_return_model <- Core$abnormal_return ~ Core$Tone + Core$Unc + Core$Con + Core$Bert + Core$IR + Core$lagged_return + Core$Surprise + Core$debt_equity
+
+# 
+bms_results <- bms(abnormal_return_model)
+
+# Zeige die Ergebnisse
+summary(bms_results)
+
+
+```
+
+
 ## Bibliography {#sec-bibliography}
