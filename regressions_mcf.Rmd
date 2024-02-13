@@ -5,7 +5,7 @@ author:
 - Filip Lukijanovic
 - 11776896
 - Peter Prlleshi
-- Matriculation Number 3
+- 11776041
 subtitle: A sentiment analysis on the S&P 500 Stock Market Index
 output:
   pdf_document:
@@ -31,16 +31,37 @@ The following research project is mostly based on the work done by Möller and R
 They achieve this by mining the statements and ranking the sentiments of each statement based on general tone, uncertainty and constraint. Once this is classified, the researchers then cross-check the high frequency intraday data for Euro Area stock returns on each statement day, by employing the technique of an event study. This allows them to see how stock returns reacted to statements by the ECB at whatever point they wanted to examine them.
 
 As mentioned, the researchers focused on tone, uncertainty and constraining language for the sentiment analysis. Tone captures the overall language - or the overarching narrative - of a statement, uncertainty measures how ambiguous a statement may be and constraining language quantifies how constraining the ECB communicates to be in the future. Of course the researchers did not read through every single statement by the ECB, instead, they employed a dictionary-based sentiment mining approach that considered grammatical and syntactical cues to analyze the sentiment expressed in ECB press conferences. Afterwards they scored each statement with regards to each category by employing heuristic-adjusted sentiment scores based on word lists used in previous studies. @möller2021
+The Authors had used a plethora of controls in their regression analyses, an approach that we were more reluctant to follow due to our slightly smaller sample size. The main reason behind that is that our sample could hardly accommodate the sheer number of variables used in the intitial analysis. Below, we delve into the subset of data used, and into our methodology for modelling Möller and Reichmann's (2021) sentiment methodology. In addition, we explore whether transformer-based approaches that are bespoke to Federal Reserve Statements can outperform heuristics-adjusted sentiment approaches using dictionaries, i.e. our proprietary approach. We do so by investigating the explanatory power of regressions using each sentiment approach.
 
 ## Data {#sec-data}
 
 The data used for this project consists of the following:
 
--   Federal Reserve (FED) Meetings: The U.S. American FED holds regular meetings multiple times per year where they talk about the current economic situation and what the plan is going forwards. This leaves us with 76 statements over 10 years from January 30th 2013 until July 26th 2023.
+-   Federal Reserve (FED) Meetings: The U.S. American FED holds regular meetings multiple times per year where they talk about the current economic situation and what the plan is going forwards. This leaves us with 74 statements over 10 years from January 30th 2013 until July 26th 2023.
 
--   Standard & Poor's 500 stock market index pricing: We cross-check the statements and their nature with the price of the S&P 500 stock market index on each day of a statement. This index is of particular interest since it incorporates 500 U.S. american companies representing a large part of the whole market itself. This means that we can use the S&P 500 as a proxy for how the market behaves at a given day.
+-   Standard & Poor's 500 stock market index pricing: We cross-check the statements and their nature with the price of the S&P 500 stock market index on each day of a statement. This index is of particular interest since it incorporates 500 U.S. american companies representing a large part of the whole market itself. This means that we can use the S&P 500 as a proxy for how the market behaves at a given day. Alongside that we obtained weighted debt to equity ratios of the index to see if higher leverage leads to stronger reactions to sentiment. A third and final element of S&P 500 data was lagged returns that were used in some of our analysis
+
+-   Federal Funds Futures data: the rate or price equivalent of the interest rate that the market prices in for the next 30 days was obtained as well, as a proxy for market expectations on interest rates.
+
+All of our data, save for the FOMC meeting minutes were obtained via the Bloomberg Terminal data services, whereas the FOMC minutes were manually extracted.
 
 ## Methodology {#sec-methodology}
+Our analysis of equity returns following FOMC sentiment levels can be partitioned in two. The first part is sentiment extraction, wit our approach closely following that of Möller and Reichmann (2021), as well as an implementation of Google's FinBERT NLP transformer for an alternative gaugue of the tone of FOMC minutes.
+The second part focuses on the construction of the variables needed in our regression, both core variables as are equity returns and sentiment, as well as various controls inspired by the paper from Möller and Reichmann.
+
+
+### Sentiment Extraction - VADER Method {#sec-methodology}
+
+Our first approach to modelling the sentiment of FOMC minutes closely resembles that of Möller and Reichmann (2021), who use the NLTK VADER package in Python to extract sentiment. The VADER package is special insofar as it adjusts sentiment for heuristics, which gives it an advantage over conventional dictionary-based NLP methods. Furthermore, sentiment can be modeled for intensity as well, with Sentiment \(S  \in [-4,4]\). Möller and Reichmann (2021) expand the inbuilt dictionary of words and corresponding stand-alone sentiment scores by financial terms that correspond to mere Tone, Uncertainty, as well as Constraining language, so as to be able to capture different dimensions of speech. MISSINGMISSING: \\
+
+Library Construction for each sentiment CON UNC, i.e. References to the libraries via BIBTEX<<
+
+Our approach to this was to update the lexicon in VADER as well, whereby our extraction of Tone merely necessitated the updating of the pre-existing lexicon. For Unc and Con, however, we used the libraries XX and YY to construct scores. To extract the nuances of uncertain and constraining language, the sentiment scores of all tokens not included in the respective external libraries received reduced sentiment scores, to 20% of their initial sentiment score. Meanwhile, the tokens from the libraries were weighted regularly, i.e. with sentiment scores \( S \in \{ 2, -2 \}\), as 2 is equivalent to moderate intensity in the VADER package. Adjusting every word's sentiment score manually for its intensity was not deemed feasible for the scope of a project.
+
+Once these transformations took place, the FOMC data was tokenized into sentences, which were then tokenized for each constituent word. The sentiment score 
+
+
+
 
 ```{r library setup, include=FALSE}
 library(readxl)
@@ -49,6 +70,7 @@ library(zoo)
 library(dplyr)
 library(stargazer)
 library(lmtest)
+library(BMS)
 ```
 
 ```{r Definition of Data, include=FALSE}
@@ -168,7 +190,7 @@ stargazer(simple_tone, simple_con, simple_unc, simple_bert, column.labels = c("T
 
 \pagebreak
 
-```{r Models including IR, echo=TRUE}
+```{r Models including IR, echo=TRUE, results='asis'}
 simple_tone_IR <- lm(abnormal_return~Tone + IR, data = Core)
 simple_unc_IR <- lm(abnormal_return~Unc + IR, data = Core)
 simple_con_IR <- lm(abnormal_return~Con + IR, data = Core)
@@ -179,7 +201,7 @@ stargazer(simple_bert_IR, simple_bert_IR, simple_bert_IR, simple_bert_IR,
 
 ```
 
-```{r Models including LR}
+```{r Models including LR, results='asis'}
 simple_tone_LR <- lm(abnormal_return ~ Tone + IR + lagged_return, data = Core)
 simple_unc_LR <- lm(abnormal_return ~ Unc + IR + lagged_return, data = Core)
 simple_con_LR <- lm(abnormal_return ~ Con + IR + lagged_return, data = Core)
@@ -188,7 +210,7 @@ simple_bert_LR <- lm(abnormal_return ~ Bert + IR + lagged_return, data = Core)
 stargazer(simple_tone_LR, simple_con_LR, simple_unc_LR, simple_bert_LR, column.labels = c("Tone", "Unc", "Con", "Bert"), header = F)
 ```
 
-```{r Models including SUR}
+```{r Models including SUR, results='asis'}
 simple_tone_SUR <- lm(abnormal_return ~ Tone + IR + lagged_return + Surprise, data = Core)
 simple_unc_SUR <- lm(abnormal_return ~ Unc + IR + lagged_return + Surprise, data = Core)
 simple_con_SUR <- lm(abnormal_return ~ Con + IR + lagged_return + Surprise, data = Core)
@@ -198,7 +220,7 @@ stargazer(simple_tone_SUR, simple_unc_SUR, simple_con_SUR, simple_bert_SUR, colu
 
 ```
 
-```{r Models including DE}
+```{r Models including DE, results='asis'}
 simple_tone_DE <- lm(abnormal_return ~ Tone + IR + lagged_return + Surprise + debt_equity, data = Core)
 simple_unc_DE <- lm(abnormal_return ~ Con + IR + lagged_return + Surprise + debt_equity, data = Core)
 simple_con_DE <- lm(abnormal_return ~ Con + IR + lagged_return + Surprise + debt_equity, data = Core)
@@ -208,7 +230,7 @@ stargazer(simple_tone_DE, simple_unc_DE, simple_con_DE, simple_bert_DE, column.l
 
 ```
 
-```{r}
+```{r, results='asis'}
 interactions_tone <- lm(abnormal_return ~ Tone * debt_equity + IR + lagged_return + Surprise * debt_equity + debt_equity, data = Core)
 
 interactions_unc<-lm(abnormal_return~Unc*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
@@ -235,8 +257,7 @@ stargazer(trial_tone, trial_unc, trial_con, trial_bert,
 
 After regressing everything and getting the results we do a final check via Baysian Model Averaging, where we can see which of the Variables from our Core data set truly are important to abnormal returns. This methodology is to check which variables have variable importance in a regression.
 ```{r}
-install.packages("BMS")
-library(BMS)
+
 
 
 # Defining the Model
