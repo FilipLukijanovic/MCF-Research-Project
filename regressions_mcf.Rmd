@@ -68,11 +68,17 @@ PIC WITH SENTIMENTS AND some good ole bla on events etc. Graph with federal rese
 
 Another route we took to sentiment construction was that of FinBERT. FinBERT is a transformer-based natural language processing model that can analyze phrases contextually by looking at both preceding and succeeding words, i.e. it is bidirectional, which our VADER approach is not. FinBERT is an adaptation of BERT which was a generalized sentiment analysis tool developed by Google, whereby Araci (2019) @araci2019finbert trained it on an extensive corpus of financial data. Luckily for us, Chen et al. (2023) @chen2023finbert took it one step further and trained BERT on FOMC statement sentiment, which seemed like an ideal approach to pit our tone construction against in our analysis. Similarly to the approach with VADER, we constructed sentiments by BERT on a sentence by sentence basis and weighted every sentence by its relative word count.
 
-As a next step, we had to transform and prepare all of our financial data for analysis, which we delve into below
+As a next step, we had to transform and prepare all of our financial data for analysis, which we delve into below.
 
 ### Financial Data Processing {#sec-methodology}
 
+For every data point of our financial data, the last available datapoint was carried forward to the day of the FOMC minute issue, whereby returns were constructed via log-returns, in order to facilitate the computation of average returns in order to calculate abnormal returns. The abnormal returns, our independent variable of interest, was constructed using the model of MacKinlay (1997) @mackinlay1997event, who computed abnormal returns as the of cumulative returns after an event over average returns over a period, in our case 3 years.
 
+Furthermore, we constructed a variable which captures the surprise effect of interest rate changes, in line with Möller and Reichmann's (2021) method in order to truly isolate the effect of sentiment from the mechanical effect of interest rate levels. This variable was constructed via the difference of implied interest rate expectations from federal funds rate futures one day before the announcement and the actual interest rate that was announced.
+
+The point where we depart from the methodology of Möller and Reichmann (2021) is the fact that we also investigate the effects on returns for heterogeneity based on general debt levels of companies, essentially posing the question if returns react to negative sentiment more in times of high indebtedness.
+
+### Regression Sepcifications
 
 
 
