@@ -65,7 +65,7 @@ PIC WITH SENTIMENTS AND some good ole bla on events etc. Graph with federal rese
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.8\textwidth]{Sentiment_andBert.png}
+\includegraphics[width=1\textwidth]{Sentiment_andBert_Fed.png}
 \caption{Sentiment Trajectory}
 \end{figure}
 
@@ -99,6 +99,7 @@ library(dplyr)
 library(stargazer)
 library(lmtest)
 library(BMS)
+library(writexl)
 ```
 
 ```{r Definition of Data, include=FALSE}
@@ -293,8 +294,6 @@ abnormal_return_model <- Core$abnormal_return ~ Core$Tone + Core$Unc + Core$Con 
 
 # Doing the BMA itself
 bms_results <- bms(abnormal_return_model)
-
-
 
 ```
 
