@@ -30,8 +30,7 @@ The following research project is mostly based on the work done by Möller and R
 
 They achieve this by mining the statements and ranking the sentiments of each statement based on general tone, uncertainty and constraint. Once this is classified, the researchers then cross-check the high frequency intraday data for Euro Area stock returns on each statement day, by employing the technique of an event study. This allows them to see how stock returns reacted to statements by the ECB at whatever point they wanted to examine them.
 
-As mentioned, the researchers focused on tone, uncertainty and constraining language for the sentiment analysis. Tone captures the overall language - or the overarching narrative - of a statement, uncertainty measures how ambiguous a statement may be and constraining language quantifies how constraining the ECB communicates to be in the future. Of course the researchers did not read through every single statement by the ECB, instead, they employed a dictionary-based sentiment mining approach that considered grammatical and syntactical cues to analyze the sentiment expressed in ECB press conferences. Afterwards they scored each statement with regards to each category by employing heuristic-adjusted sentiment scores based on word lists used in previous studies. @möller2021
-The Authors had used a plethora of controls in their regression analyses, an approach that we were more reluctant to follow due to our slightly smaller sample size. The main reason behind that is that our sample could hardly accommodate the sheer number of variables used in the intitial analysis. Below, we delve into the subset of data used, and into our methodology for modelling Möller and Reichmann's (2021) sentiment methodology. In addition, we explore whether transformer-based approaches that are bespoke to Federal Reserve Statements can outperform heuristics-adjusted sentiment approaches using dictionaries, i.e. our proprietary approach. We do so by investigating the explanatory power of regressions using each sentiment approach.
+As mentioned, the researchers focused on tone, uncertainty and constraining language for the sentiment analysis. Tone captures the overall language - or the overarching narrative - of a statement, uncertainty measures how ambiguous a statement may be and constraining language quantifies how constraining the ECB communicates to be in the future. Of course the researchers did not read through every single statement by the ECB, instead, they employed a dictionary-based sentiment mining approach that considered grammatical and syntactical cues to analyze the sentiment expressed in ECB press conferences. Afterwards they scored each statement with regards to each category by employing heuristic-adjusted sentiment scores based on word lists used in previous studies. @möller2021 The Authors had used a plethora of controls in their regression analyses, an approach that we were more reluctant to follow due to our slightly smaller sample size. The main reason behind that is that our sample could hardly accommodate the sheer number of variables used in the intitial analysis. Below, we delve into the subset of data used, and into our methodology for modelling Möller and Reichmann's (2021) sentiment methodology. In addition, we explore whether transformer-based approaches that are bespoke to Federal Reserve Statements can outperform heuristics-adjusted sentiment approaches using dictionaries, i.e. our proprietary approach. We do so by investigating the explanatory power of regressions using each sentiment approach.
 
 ## Data {#sec-data}
 
@@ -46,37 +45,35 @@ The data used for this project consists of the following:
 All of our data, save for the FOMC meeting minutes were obtained via the Bloomberg Terminal data services, whereas the FOMC minutes were manually extracted.
 
 ## Methodology {#sec-methodology}
-Our analysis of equity returns following FOMC sentiment levels can be partitioned in two. The first part is sentiment extraction, wit our approach closely following that of Möller and Reichmann (2021), as well as an implementation of Google's FinBERT NLP transformer for an alternative gaugue of the tone of FOMC minutes.
-The second part focuses on the construction of the variables needed in our regression, both core variables as are equity returns and sentiment, as well as various controls inspired by the paper from Möller and Reichmann.
 
+Our analysis of equity returns following FOMC sentiment levels can be partitioned in two. The first part is sentiment extraction, wit our approach closely following that of Möller and Reichmann (2021), as well as an implementation of Google's FinBERT NLP transformer for an alternative gaugue of the tone of FOMC minutes. The second part focuses on the construction of the variables needed in our regression, both core variables as are equity returns and sentiment, as well as various controls inspired by the paper from Möller and Reichmann.
 
-### Sentiment Extraction - VADER Method {#sec-methodology}
+### Sentiment Extraction - VADER Method
 
-Our first approach to modelling the sentiment of FOMC minutes closely resembles that of Möller and Reichmann (2021), who use the NLTK VADER package in Python to extract sentiment. The VADER package is special insofar as it adjusts sentiment for heuristics, which gives it an advantage over conventional dictionary-based NLP methods (Hutto, 2014) @hutto2014vader.  Furthermore, sentiment can be modeled for intensity as well, with Sentiment \(S  \in [-4,4]\). Möller and Reichmann (2021) expand the inbuilt dictionary of words and corresponding stand-alone sentiment scores by financial terms that correspond to mere Tone, Uncertainty, as well as Constraining language, so as to be able to capture different dimensions of speech.
+Our first approach to modelling the sentiment of FOMC minutes closely resembles that of Möller and Reichmann (2021), who use the NLTK VADER package in Python to extract sentiment. The VADER package is special insofar as it adjusts sentiment for heuristics, which gives it an advantage over conventional dictionary-based NLP methods (Hutto, 2014) @hutto2014vader. Furthermore, sentiment can be modeled for intensity as well, with Sentiment $S \in [-4,4]$. Möller and Reichmann (2021) expand the inbuilt dictionary of words and corresponding stand-alone sentiment scores by financial terms that correspond to mere Tone, Uncertainty, as well as Constraining language, so as to be able to capture different dimensions of speech.
 
-Our approach to this was to update the lexicon in VADER as well, whereby our extraction of Tone merely necessitated the updating of the pre-existing lexicon. For Unc and Con, however, we used the libraries by Bodnaruk (2015) @bodnaruk2015using for constraining language and Loughran and McDonald (2011) @loughran2011liability to construct scores for uncertain language and for extending the VADER dictionary by financial terms. To extract the nuances of uncertain and constraining language, the sentiment scores of all tokens not included in the respective external libraries received reduced sentiment scores, to 20% of their initial sentiment score. Meanwhile, the tokens from the libraries were weighted regularly, i.e. with sentiment scores \( S \in \{ 2, -2 \}\), as 2 is equivalent to moderate intensity in the VADER package. Adjusting every word's sentiment score manually for its intensity was not deemed feasible for the scope of a project.
+Our approach to this was to update the lexicon in VADER as well, whereby our extraction of Tone merely necessitated the updating of the pre-existing lexicon. For Unc and Con, however, we used the libraries by Bodnaruk (2015) @bodnaruk2015using for constraining language and Loughran and McDonald (2011) @loughran2011liability to construct scores for uncertain language and for extending the VADER dictionary by financial terms. To extract the nuances of uncertain and constraining language, the sentiment scores of all tokens not included in the respective external libraries received reduced sentiment scores, to 20% of their initial sentiment score. Meanwhile, the tokens from the libraries were weighted regularly, i.e. with sentiment scores $S \in \{ 2, -2 \}$, as 2 is equivalent to moderate intensity in the VADER package. Adjusting every word's sentiment score manually for its intensity was not deemed feasible for the scope of a project.
 
 Once these transformations took place, the FOMC data was tokenized into sentences, which were then tokenized for each constituent word. The sentiment score for every sentence is weighted by the word count in each sentence relative to the total word count in the statement.
 
 Finally, we constructed the three sentiment elements and saw their trajectory move as follows:
 
-
 PIC WITH SENTIMENTS AND some good ole bla on events etc. Graph with federal reserve interest rate dots as well?? we shall see.... (74 points)
 
+```{=tex}
 \begin{figure}[ht]
 \centering
 \includegraphics[width=1\textwidth]{Sentiment_andBert_Fed.png}
 \caption{Sentiment Trajectory}
 \end{figure}
-
-
-### Sentiment Extraction - FinBERT Method {#sec-methodology}
+```
+### Sentiment Extraction - FinBERT Method
 
 Another route we took to sentiment construction was that of FinBERT. FinBERT is a transformer-based natural language processing model that can analyze phrases contextually by looking at both preceding and succeeding words, i.e. it is bidirectional, which our VADER approach is not. FinBERT is an adaptation of BERT which was a generalized sentiment analysis tool developed by Google, whereby Araci (2019) @araci2019finbert trained it on an extensive corpus of financial data. Luckily for us, Chen et al. (2023) @chen2023finbert took it one step further and trained BERT on FOMC statement sentiment, which seemed like an ideal approach to pit our tone construction against in our analysis. Similarly to the approach with VADER, we constructed sentiments by BERT on a sentence by sentence basis and weighted every sentence by its relative word count.
 
 As a next step, we had to transform and prepare all of our financial data for analysis, which we delve into below.
 
-### Financial Data Processing {#sec-methodology}
+### Financial Data Processing
 
 For every data point of our financial data, the last available datapoint was carried forward to the day of the FOMC minute issue, whereby returns were constructed via log-returns, in order to facilitate the computation of average returns in order to calculate abnormal returns. The abnormal returns, our independent variable of interest, was constructed using the model of MacKinlay (1997) @mackinlay1997event, who computed abnormal returns as the of cumulative returns after an event over average returns over a period, in our case 3 years.
 
@@ -85,11 +82,6 @@ Furthermore, we constructed a variable which captures the surprise effect of int
 The point where we depart from the methodology of Möller and Reichmann (2021) is the fact that we also investigate the effects on returns for heterogeneity based on general debt levels of companies, essentially posing the question if returns react to negative sentiment more in times of high indebtedness.
 
 ### Regression Sepcifications
-
-
-
-
-
 
 ```{r library setup, include=FALSE}
 library(readxl)
@@ -282,9 +274,10 @@ stargazer(trial_tone, trial_unc, trial_con, trial_bert,
           column.labels = c("Tone", "Unc", "Con", "Bert"), header = F)
 ```
 
-## BMA 
+## BMA
 
 After regressing everything and getting the results we do a final check via Baysian Model Averaging, where we can see which of the Variables from our Core data set truly are important to abnormal returns. This methodology is to check which variables have variable importance in a regression.
+
 ```{r}
 
 
@@ -296,6 +289,15 @@ abnormal_return_model <- Core$abnormal_return ~ Core$Tone + Core$Unc + Core$Con 
 bms_results <- bms(abnormal_return_model)
 
 ```
+
+## Potential For Future Research
+
+Considering the fact that FED statements have been forced to consider significant humanitarian crises such as the outbreak of the COVID-19 pandemic (First Lockdown in the U.S. began on March 12th, 2020), the invasion of Russia into Ukraine (February 24th, 2022 - immediatly after economical from COVID began the lessen) and the Hamas terrorist attack on Israel ( October 7th, 2023), there is exists a future avenue for future research.
+
+While, of course, the U.S. interest rate policy must consider global geopolitical events, it can only incorporate them events so much. This means that a discrepancy between the U.S.-focused and more "fact-based" interest rate and the more "human" statements will likely occur. Future research could find a way to quantify the difference between economically relevant word-combinations by refining linguistic analysis methods, adjusting dictionaries, and filtering out word combinations that may focus on factors irrelevant to immediate, upcoming policy, thereby emphasizing a more financially centered context.
+
+This research potential may become apparent when observing the disparity between the overall trend the SPX shows since the "COVID-Crash" in March 2020 - particularly the clear positive trend since the beginning of 2023 - and the language employed by the FED in its statements since the beginning of the recorded statements in data used. As mentioned, future research may seek to refine the dictionaries used and isolate sentences or word-combinations related to unforeseen geopolitical events, that cannot be ignored in a statement by a governing  body.
+
 
 
 ## Bibliography {#sec-bibliography}
