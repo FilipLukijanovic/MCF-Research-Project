@@ -293,8 +293,8 @@ While the U.S. interest rate policy must inevitably take into account global geo
 
 This research potential especially becomes apparent when observing the disparity between the overall trend the SPX shows since the "COVID-Crash" in March 2020 - particularly the clear positive trend since the beginning of 2023 - and the language employed by the FED in its statements since the beginning of the recorded statements in the data used. As mentioned, future research may seek to refine the dictionaries used and isolate sentences or word-combinations related to unforeseen geopolitical events, that cannot be ignored in a statement by a governing body.
 
-## 7. Conclusion
+## 6. Conclusion
 
 \pagebreak
 
-## 6. Bibliography {#sec-bibliography}
+## 7. Bibliography {#sec-bibliography}
