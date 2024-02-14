@@ -63,6 +63,12 @@ Finally, we constructed the three sentiment elements and saw their trajectory mo
 
 PIC WITH SENTIMENTS AND some good ole bla on events etc. Graph with federal reserve interest rate dots as well?? we shall see.... (74 points)
 
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.8\textwidth]{Sentiment_andBert.png}
+\caption{Sentiment Trajectory}
+\end{figure}
+
 
 ### Sentiment Extraction - FinBERT Method {#sec-methodology}
 
