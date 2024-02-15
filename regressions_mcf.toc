@@ -7,6 +7,7 @@
 \contentsline {subsubsection}{3.3 Financial Data Processing}{5}{section*.8}%
 \contentsline {subsubsection}{3.4 Regression Sepcifications}{5}{section*.9}%
 \contentsline {subsection}{4. Bayesian Model Averaging}{13}{section*.10}%
-\contentsline {subsection}{5. Potential for Future Research}{14}{section*.11}%
-\contentsline {subsection}{6. Conclusion}{15}{section*.12}%
-\contentsline {subsection}{7. Bibliography}{16}{section*.13}%
+\contentsline {subsection}{4.1. A brief excursion into the stability of the Tone Effect over time}{14}{section*.11}%
+\contentsline {subsection}{5. Potential for Future Research}{15}{section*.12}%
+\contentsline {subsection}{6. Conclusion}{16}{section*.13}%
+\contentsline {subsection}{7. Bibliography}{17}{section*.14}%

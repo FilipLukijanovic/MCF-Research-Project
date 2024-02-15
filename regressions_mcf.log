@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.12) (preloaded format=pdflatex 2023.1.16)  15 FEB 2024 14:59
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.12) (preloaded format=pdflatex 2023.1.16)  15 FEB 2024 16:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -666,7 +666,7 @@ LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 1
 (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/lm\ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [3]
-<Sentiment_andBert_Fed.png, id=50, 891.8118pt x 442.2924pt>
+<Sentiment_andBert_Fed.png, id=52, 891.8118pt x 442.2924pt>
 File: Sentiment_andBert_Fed.png Graphic file (type png)
 <use Sentiment_andBert_Fed.png>
 Package pdftex.def Info: Sentiment_andBert_Fed.png  used on input line 243.
@@ -677,45 +677,45 @@ LaTeX Warning: Float too large for page by 26.80946pt on input line 705.
 
 [11] [12]
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 7
-51.
+53.
 (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/lm\t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-<regressions_mcf_files/figure-latex/unnamed-chunk-3-1.pdf, id=108, 469.755pt x 
+<regressions_mcf_files/figure-latex/unnamed-chunk-3-1.pdf, id=110, 469.755pt x 
 325.215pt>
 File: regressions_mcf_files/figure-latex/unnamed-chunk-3-1.pdf Graphic file (ty
 pe pdf)
 <use regressions_mcf_files/figure-latex/unnamed-chunk-3-1.pdf>
 Package pdftex.def Info: regressions_mcf_files/figure-latex/unnamed-chunk-3-1.p
-df  used on input line 802.
+df  used on input line 799.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 [13]
-<regressions_mcf_files/figure-latex/unnamed-chunk-7-1.pdf, id=116, 469.755pt x 
+<regressions_mcf_files/figure-latex/unnamed-chunk-6-1.pdf, id=118, 469.755pt x 
 325.215pt>
-File: regressions_mcf_files/figure-latex/unnamed-chunk-7-1.pdf Graphic file (ty
+File: regressions_mcf_files/figure-latex/unnamed-chunk-6-1.pdf Graphic file (ty
 pe pdf)
-<use regressions_mcf_files/figure-latex/unnamed-chunk-7-1.pdf>
-Package pdftex.def Info: regressions_mcf_files/figure-latex/unnamed-chunk-7-1.p
-df  used on input line 843.
+<use regressions_mcf_files/figure-latex/unnamed-chunk-6-1.pdf>
+Package pdftex.def Info: regressions_mcf_files/figure-latex/unnamed-chunk-6-1.p
+df  used on input line 834.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 [14 <./regressions_mcf_files/figure-latex/unnamed-chunk-3-1.pdf>] [15 <./regres
-sions_mcf_files/figure-latex/unnamed-chunk-7-1.pdf>]
-Overfull \hbox (0.3461pt too wide) in paragraph at lines 860--864
+sions_mcf_files/figure-latex/unnamed-chunk-6-1.pdf>] [16]
+Overfull \hbox (0.3461pt too wide) in paragraph at lines 918--922
 []\T1/lmr/m/n/10 (-20) Bodnaruk, Andriy, Tim Loughran, and Bill McDonald. 2015.
  ``Using 10-k Text to Gauge Financial Constraints.''
  []
 
-[16] (regressions_mcf.aux)
+[17] (regressions_mcf.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 14094 strings out of 476372
- 232294 string characters out of 2785563
+ 14103 strings out of 476372
+ 232492 string characters out of 2785563
  1878787 words of memory out of 3000000
- 34032 multiletter control sequences out of 15000+600000
- 568369 words of font info for 140 fonts, out of 8000000 for 9000
+ 34034 multiletter control sequences out of 15000+600000
+ 568535 words of font info for 142 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  74i,10n,81p,1014b,472s stack positions out of 10000i,1000n,20000p,200000b,80000s
 {C:/Users/Pjeter/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.e
@@ -735,9 +735,9 @@ ograms/MiKTeX 2.9/fonts/type1/public/lm/lmri10.pfb><C:/Users/Pjeter/AppData/Loc
 al/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmsy10.pfb><C:/Users/Pjeter/AppDat
 a/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmsy7.pfb><C:/Users/Pjeter/Ap
 pData/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmtt10.pfb>
-Output written on regressions_mcf.pdf (16 pages, 412136 bytes).
+Output written on regressions_mcf.pdf (17 pages, 417299 bytes).
 PDF statistics:
- 264 PDF objects out of 1000 (max. 8388607)
- 58 named destinations out of 1000 (max. 500000)
- 30832 words of extra memory for PDF output out of 35830 (max. 10000000)
+ 275 PDF objects out of 1000 (max. 8388607)
+ 61 named destinations out of 1000 (max. 500000)
+ 30840 words of extra memory for PDF output out of 35830 (max. 10000000)
 
