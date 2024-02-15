@@ -9,12 +9,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Matthias Farngruber" />
-<meta name="author" content="Matriculation Number 1" />
-<meta name="author" content="Filip Lukijanovic" />
-<meta name="author" content="11776896" />
-<meta name="author" content="Peter Prlleshi" />
-<meta name="author" content="Matriculation Number 3" />
+<meta name="author" content="Matthias Farngruber, 11801413" />
+<meta name="author" content="Filip Lukijanovic, 11776896" />
+<meta name="author" content="Peter Prlleshi, 11776041" />
 
 
 <title>Does FED Communication cause immediate and abnormal returns stock market?</title>
@@ -380,12 +377,9 @@ display: none;
 abnormal returns stock market?</h1>
 <h3 class="subtitle">A sentiment analysis on the S&amp;P 500 Stock
 Market Index</h3>
-<h4 class="author">Matthias Farngruber</h4>
-<h4 class="author">Matriculation Number 1</h4>
-<h4 class="author">Filip Lukijanovic</h4>
-<h4 class="author">11776896</h4>
-<h4 class="author">Peter Prlleshi</h4>
-<h4 class="author">Matriculation Number 3</h4>
+<h4 class="author">Matthias Farngruber, 11801413</h4>
+<h4 class="author">Filip Lukijanovic, 11776896</h4>
+<h4 class="author">Peter Prlleshi, 11776041</h4>
 
 </div>
 
@@ -395,7 +389,7 @@ Market Index</h3>
 <div style="page-break-after: always;"></div>
 </div>
 <div id="sec-literature-review" class="section level2">
-<h2>Literature Review</h2>
+<h2>1. Literature Review</h2>
 <p>The following research project is mostly based on the work done by
 Möller and Reichmann (2021) in the field of sentiment analysis. In their
 paper “ECB Language and Stock Returns - A Textual analysis of ECB Press
@@ -420,16 +414,26 @@ cues to analyze the sentiment expressed in ECB press conferences.
 Afterwards they scored each statement with regards to each category by
 employing heuristic-adjusted sentiment scores based on word lists used
 in previous studies. <span class="citation">Möller and Reichmann
-(2021a)</span></p>
+(2021a)</span> The Authors had used a plethora of controls in their
+regression analyses, an approach that we were more reluctant to follow
+due to our slightly smaller sample size. The main reason behind that is
+that our sample could hardly accommodate the sheer number of variables
+used in the intitial analysis. Below, we delve into the subset of data
+used, and into our methodology for modelling Möller and Reichmann’s
+(2021) sentiment methodology. In addition, we explore whether
+transformer-based approaches that are bespoke to Federal Reserve
+Statements can outperform heuristics-adjusted sentiment approaches using
+dictionaries, i.e. our proprietary approach. We do so by investigating
+the explanatory power of regressions using each sentiment approach.</p>
 </div>
 <div id="sec-data" class="section level2">
-<h2>Data</h2>
+<h2>2. Data</h2>
 <p>The data used for this project consists of the following:</p>
 <ul>
 <li><p>Federal Reserve (FED) Meetings: The U.S. American FED holds
 regular meetings multiple times per year where they talk about the
 current economic situation and what the plan is going forwards. This
-leaves us with 76 statements over 10 years from January 30th 2013 until
+leaves us with 74 statements over 10 years from January 30th 2013 until
 July 26th 2023.</p></li>
 <li><p>Standard &amp; Poor’s 500 stock market index pricing: We
 cross-check the statements and their nature with the price of the
@@ -437,310 +441,422 @@ S&amp;P 500 stock market index on each day of a statement. This index is
 of particular interest since it incorporates 500 U.S. american companies
 representing a large part of the whole market itself. This means that we
 can use the S&amp;P 500 as a proxy for how the market behaves at a given
-day.</p></li>
+day. Alongside that we obtained weighted debt to equity ratios of the
+index to see if higher leverage leads to stronger reactions to
+sentiment. A third and final element of S&amp;P 500 data was lagged
+returns that were used in some of our analysis</p></li>
+<li><p>Federal Funds Futures data: the rate or price equivalent of the
+interest rate that the market prices in for the next 30 days was
+obtained as well, as a proxy for market expectations on interest
+rates.</p></li>
 </ul>
+<p>All of our data, save for the FOMC meeting minutes were obtained via
+the Bloomberg Terminal data services, whereas the FOMC minutes were
+manually extracted.</p>
 </div>
 <div id="sec-methodology" class="section level2">
-<h2>Methodology</h2>
-<p>XYZ</p>
-<pre class="r"><code>simple_tone &lt;- lm(abnormal_return ~ Tone, data = Core)
-simple_unc &lt;- lm(abnormal_return ~ Unc, data = Core)
-simple_con &lt;- lm(abnormal_return ~ Con, data = Core)
-simple_bert &lt;- lm(abnormal_return ~ Bert, data = Core)
-
-stargazer(simple_tone, simple_con, simple_unc, simple_bert, column.labels = c(&quot;Tone&quot;, &quot;Unc&quot;, &quot;Con&quot;, &quot;Bert&quot;), header = F)</code></pre>
-<pre class="r"><code>simple_tone_IR &lt;- lm(abnormal_return ~ Tone + IR, data = Core)
-simple_unc_IR &lt;- lm(abnormal_return ~ Unc + IR, data = Core)
-simple_con_IR &lt;- lm(abnormal_return ~ Con + IR, data = Core)
-simple_bert_IR &lt;- lm(abnormal_return ~ Bert + IR, data = Core)
-
-stargazer(simple_tone_IR, simple_con_IR, simple_unc_IR, simple_bert_IR, column.labels = c(&quot;Tone&quot;, &quot;Unc&quot;, &quot;Con&quot;, &quot;Bert&quot;), header = F)</code></pre>
-<pre><code>## 
-## \begin{table}[!htbp] \centering 
-##   \caption{} 
-##   \label{} 
-## \begin{tabular}{@{\extracolsep{5pt}}lcccc} 
-## \\[-1.8ex]\hline 
-## \hline \\[-1.8ex] 
-##  &amp; \multicolumn{4}{c}{\textit{Dependent variable:}} \\ 
-## \cline{2-5} 
-## \\[-1.8ex] &amp; \multicolumn{4}{c}{abnormal\_return} \\ 
-##  &amp; Tone &amp; Unc &amp; Con &amp; Bert \\ 
-## \\[-1.8ex] &amp; (1) &amp; (2) &amp; (3) &amp; (4)\\ 
-## \hline \\[-1.8ex] 
-##  Tone &amp; 0.016 &amp;  &amp;  &amp;  \\ 
-##   &amp; (0.013) &amp;  &amp;  &amp;  \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  Con &amp;  &amp; $-$0.002 &amp;  &amp;  \\ 
-##   &amp;  &amp; (0.033) &amp;  &amp;  \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  Unc &amp;  &amp;  &amp; 0.016 &amp;  \\ 
-##   &amp;  &amp;  &amp; (0.020) &amp;  \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  Bert &amp;  &amp;  &amp;  &amp; 0.009 \\ 
-##   &amp;  &amp;  &amp;  &amp; (0.045) \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  IR &amp; 0.0005 &amp; $-$0.001 &amp; $-$0.0003 &amp; $-$0.001 \\ 
-##   &amp; (0.001) &amp; (0.001) &amp; (0.001) &amp; (0.001) \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  Constant &amp; $-$0.003 &amp; 0.001 &amp; $-$0.002 &amp; $-$0.007 \\ 
-##   &amp; (0.004) &amp; (0.005) &amp; (0.004) &amp; (0.043) \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-## \hline \\[-1.8ex] 
-## Observations &amp; 76 &amp; 76 &amp; 76 &amp; 76 \\ 
-## R$^{2}$ &amp; 0.026 &amp; 0.005 &amp; 0.013 &amp; 0.006 \\ 
-## Adjusted R$^{2}$ &amp; $-$0.001 &amp; $-$0.022 &amp; $-$0.014 &amp; $-$0.021 \\ 
-## Residual Std. Error (df = 73) &amp; 0.010 &amp; 0.010 &amp; 0.010 &amp; 0.010 \\ 
-## F Statistic (df = 2; 73) &amp; 0.958 &amp; 0.194 &amp; 0.494 &amp; 0.211 \\ 
-## \hline 
-## \hline \\[-1.8ex] 
-## \textit{Note:}  &amp; \multicolumn{4}{r}{$^{*}$p$&lt;$0.1; $^{**}$p$&lt;$0.05; $^{***}$p$&lt;$0.01} \\ 
-## \end{tabular} 
-## \end{table}</code></pre>
-<pre class="r"><code>simple_tone_LR &lt;- lm(abnormal_return ~ Tone + IR + lagged_return, data = Core)
-simple_unc_LR &lt;- lm(abnormal_return ~ Unc + IR + lagged_return, data = Core)
-simple_con_LR &lt;- lm(abnormal_return ~ Con + IR + lagged_return, data = Core)
-simple_bert_LR &lt;- lm(abnormal_return ~ Bert + IR + lagged_return, data = Core)
-
-stargazer(simple_tone_LR, simple_con_LR, simple_unc_LR, simple_bert_LR, column.labels = c(&quot;Tone&quot;, &quot;Unc&quot;, &quot;Con&quot;, &quot;Bert&quot;), header = F)</code></pre>
-<pre><code>## 
-## \begin{table}[!htbp] \centering 
-##   \caption{} 
-##   \label{} 
-## \begin{tabular}{@{\extracolsep{5pt}}lcccc} 
-## \\[-1.8ex]\hline 
-## \hline \\[-1.8ex] 
-##  &amp; \multicolumn{4}{c}{\textit{Dependent variable:}} \\ 
-## \cline{2-5} 
-## \\[-1.8ex] &amp; \multicolumn{4}{c}{abnormal\_return} \\ 
-##  &amp; Tone &amp; Unc &amp; Con &amp; Bert \\ 
-## \\[-1.8ex] &amp; (1) &amp; (2) &amp; (3) &amp; (4)\\ 
-## \hline \\[-1.8ex] 
-##  Tone &amp; 0.018 &amp;  &amp;  &amp;  \\ 
-##   &amp; (0.014) &amp;  &amp;  &amp;  \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  Con &amp;  &amp; $-$0.001 &amp;  &amp;  \\ 
-##   &amp;  &amp; (0.034) &amp;  &amp;  \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  Unc &amp;  &amp;  &amp; 0.016 &amp;  \\ 
-##   &amp;  &amp;  &amp; (0.020) &amp;  \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  Bert &amp;  &amp;  &amp;  &amp; 0.010 \\ 
-##   &amp;  &amp;  &amp;  &amp; (0.046) \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  IR &amp; 0.001 &amp; $-$0.001 &amp; $-$0.0003 &amp; $-$0.001 \\ 
-##   &amp; (0.001) &amp; (0.001) &amp; (0.001) &amp; (0.001) \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  lagged\_return &amp; $-$0.090 &amp; $-$0.060 &amp; $-$0.067 &amp; $-$0.062 \\ 
-##   &amp; (0.162) &amp; (0.163) &amp; (0.162) &amp; (0.162) \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  Constant &amp; $-$0.003 &amp; 0.001 &amp; $-$0.002 &amp; $-$0.008 \\ 
-##   &amp; (0.004) &amp; (0.005) &amp; (0.004) &amp; (0.043) \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-## \hline \\[-1.8ex] 
-## Observations &amp; 76 &amp; 76 &amp; 76 &amp; 76 \\ 
-## R$^{2}$ &amp; 0.030 &amp; 0.007 &amp; 0.016 &amp; 0.008 \\ 
-## Adjusted R$^{2}$ &amp; $-$0.011 &amp; $-$0.034 &amp; $-$0.025 &amp; $-$0.034 \\ 
-## Residual Std. Error (df = 72) &amp; 0.010 &amp; 0.011 &amp; 0.010 &amp; 0.011 \\ 
-## F Statistic (df = 3; 72) &amp; 0.736 &amp; 0.172 &amp; 0.382 &amp; 0.188 \\ 
-## \hline 
-## \hline \\[-1.8ex] 
-## \textit{Note:}  &amp; \multicolumn{4}{r}{$^{*}$p$&lt;$0.1; $^{**}$p$&lt;$0.05; $^{***}$p$&lt;$0.01} \\ 
-## \end{tabular} 
-## \end{table}</code></pre>
-<pre class="r"><code>simple_tone_SUR &lt;- lm(abnormal_return ~ Tone + IR + lagged_return + Surprise, data = Core)
-simple_unc_SUR &lt;- lm(abnormal_return ~ Unc + IR + lagged_return + Surprise, data = Core)
-simple_con_SUR &lt;- lm(abnormal_return ~ Con + IR + lagged_return + Surprise, data = Core)
-simple_bert_SUR &lt;- lm(abnormal_return ~ Bert + IR + lagged_return + Surprise, data = Core)
-
-stargazer(simple_tone_SUR, simple_unc_SUR, simple_con_SUR, simple_bert_SUR, column.labels = c(&quot;Tone&quot;, &quot;Unc&quot;, &quot;Con&quot;, &quot;Bert&quot;), header = F)</code></pre>
-<pre><code>## 
-## \begin{table}[!htbp] \centering 
-##   \caption{} 
-##   \label{} 
-## \begin{tabular}{@{\extracolsep{5pt}}lcccc} 
-## \\[-1.8ex]\hline 
-## \hline \\[-1.8ex] 
-##  &amp; \multicolumn{4}{c}{\textit{Dependent variable:}} \\ 
-## \cline{2-5} 
-## \\[-1.8ex] &amp; \multicolumn{4}{c}{abnormal\_return} \\ 
-##  &amp; Tone &amp; Unc &amp; Con &amp; Bert \\ 
-## \\[-1.8ex] &amp; (1) &amp; (2) &amp; (3) &amp; (4)\\ 
-## \hline \\[-1.8ex] 
-##  Tone &amp; 0.024$^{*}$ &amp;  &amp;  &amp;  \\ 
-##   &amp; (0.014) &amp;  &amp;  &amp;  \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  Unc &amp;  &amp; 0.012 &amp;  &amp;  \\ 
-##   &amp;  &amp; (0.020) &amp;  &amp;  \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  Con &amp;  &amp;  &amp; 0.013 &amp;  \\ 
-##   &amp;  &amp;  &amp; (0.034) &amp;  \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  Bert &amp;  &amp;  &amp;  &amp; 0.015 \\ 
-##   &amp;  &amp;  &amp;  &amp; (0.045) \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  IR &amp; 0.0004 &amp; $-$0.001 &amp; $-$0.001 &amp; $-$0.001 \\ 
-##   &amp; (0.001) &amp; (0.001) &amp; (0.001) &amp; (0.001) \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  lagged\_return &amp; $-$0.047 &amp; $-$0.023 &amp; $-$0.018 &amp; $-$0.019 \\ 
-##   &amp; (0.160) &amp; (0.162) &amp; (0.162) &amp; (0.162) \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  Surprise &amp; 0.022$^{**}$ &amp; 0.017 &amp; 0.019$^{*}$ &amp; 0.018$^{*}$ \\ 
-##   &amp; (0.011) &amp; (0.011) &amp; (0.011) &amp; (0.011) \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  Constant &amp; $-$0.005 &amp; $-$0.001 &amp; $-$0.001 &amp; $-$0.013 \\ 
-##   &amp; (0.004) &amp; (0.004) &amp; (0.005) &amp; (0.043) \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-## \hline \\[-1.8ex] 
-## Observations &amp; 76 &amp; 76 &amp; 76 &amp; 76 \\ 
-## R$^{2}$ &amp; 0.084 &amp; 0.049 &amp; 0.046 &amp; 0.046 \\ 
-## Adjusted R$^{2}$ &amp; 0.033 &amp; $-$0.004 &amp; $-$0.007 &amp; $-$0.008 \\ 
-## Residual Std. Error (df = 71) &amp; 0.010 &amp; 0.010 &amp; 0.010 &amp; 0.010 \\ 
-## F Statistic (df = 4; 71) &amp; 1.635 &amp; 0.919 &amp; 0.862 &amp; 0.855 \\ 
-## \hline 
-## \hline \\[-1.8ex] 
-## \textit{Note:}  &amp; \multicolumn{4}{r}{$^{*}$p$&lt;$0.1; $^{**}$p$&lt;$0.05; $^{***}$p$&lt;$0.01} \\ 
-## \end{tabular} 
-## \end{table}</code></pre>
-<pre class="r"><code>simple_tone_DE &lt;- lm(abnormal_return ~ Tone + IR + lagged_return + Surprise + debt_equity, data = Core)
-simple_unc_DE &lt;- lm(abnormal_return ~ Con + IR + lagged_return + Surprise + debt_equity, data = Core)
-simple_con_DE &lt;- lm(abnormal_return ~ Con + IR + lagged_return + Surprise + debt_equity, data = Core)
-simple_bert_DE &lt;- lm(abnormal_return ~ Bert + IR + lagged_return + Surprise + debt_equity, data = Core)
-
-stargazer(simple_tone_DE, simple_unc_DE, simple_con_DE, simple_bert_DE, column.labels = c(&quot;Tone&quot;, &quot;Unc&quot;, &quot;Con&quot;, &quot;Bert&quot;), header = F)</code></pre>
-<pre><code>## 
-## \begin{table}[!htbp] \centering 
-##   \caption{} 
-##   \label{} 
-## \begin{tabular}{@{\extracolsep{5pt}}lcccc} 
-## \\[-1.8ex]\hline 
-## \hline \\[-1.8ex] 
-##  &amp; \multicolumn{4}{c}{\textit{Dependent variable:}} \\ 
-## \cline{2-5} 
-## \\[-1.8ex] &amp; \multicolumn{4}{c}{abnormal\_return} \\ 
-##  &amp; Tone &amp; Unc &amp; Con &amp; Bert \\ 
-## \\[-1.8ex] &amp; (1) &amp; (2) &amp; (3) &amp; (4)\\ 
-## \hline \\[-1.8ex] 
-##  Tone &amp; 0.032$^{**}$ &amp;  &amp;  &amp;  \\ 
-##   &amp; (0.015) &amp;  &amp;  &amp;  \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  Con &amp;  &amp; 0.025 &amp; 0.025 &amp;  \\ 
-##   &amp;  &amp; (0.037) &amp; (0.037) &amp;  \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  Bert &amp;  &amp;  &amp;  &amp; 0.003 \\ 
-##   &amp;  &amp;  &amp;  &amp; (0.050) \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  IR &amp; $-$0.0003 &amp; $-$0.001 &amp; $-$0.001 &amp; $-$0.001 \\ 
-##   &amp; (0.001) &amp; (0.001) &amp; (0.001) &amp; (0.001) \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  lagged\_return &amp; $-$0.057 &amp; $-$0.019 &amp; $-$0.019 &amp; $-$0.016 \\ 
-##   &amp; (0.159) &amp; (0.162) &amp; (0.162) &amp; (0.163) \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  Surprise &amp; 0.022$^{**}$ &amp; 0.019$^{*}$ &amp; 0.019$^{*}$ &amp; 0.017 \\ 
-##   &amp; (0.011) &amp; (0.011) &amp; (0.011) &amp; (0.011) \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  debt\_equity &amp; 0.00003 &amp; 0.00002 &amp; 0.00002 &amp; 0.00001 \\ 
-##   &amp; (0.00002) &amp; (0.00002) &amp; (0.00002) &amp; (0.00002) \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  Constant &amp; $-$0.016$^{**}$ &amp; $-$0.008 &amp; $-$0.008 &amp; $-$0.005 \\ 
-##   &amp; (0.008) &amp; (0.009) &amp; (0.009) &amp; (0.045) \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-## \hline \\[-1.8ex] 
-## Observations &amp; 76 &amp; 76 &amp; 76 &amp; 76 \\ 
-## R$^{2}$ &amp; 0.113 &amp; 0.057 &amp; 0.057 &amp; 0.051 \\ 
-## Adjusted R$^{2}$ &amp; 0.050 &amp; $-$0.010 &amp; $-$0.010 &amp; $-$0.017 \\ 
-## Residual Std. Error (df = 70) &amp; 0.010 &amp; 0.010 &amp; 0.010 &amp; 0.010 \\ 
-## F Statistic (df = 5; 70) &amp; 1.792 &amp; 0.853 &amp; 0.853 &amp; 0.756 \\ 
-## \hline 
-## \hline \\[-1.8ex] 
-## \textit{Note:}  &amp; \multicolumn{4}{r}{$^{*}$p$&lt;$0.1; $^{**}$p$&lt;$0.05; $^{***}$p$&lt;$0.01} \\ 
-## \end{tabular} 
-## \end{table}</code></pre>
-<pre class="r"><code>interactions_tone &lt;- lm(abnormal_return ~ Tone * debt_equity + IR + lagged_return + Surprise * debt_equity + debt_equity, data = Core)
-
-interactions_unc&lt;-lm(abnormal_return~Unc*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
-
-interactions_con&lt;-lm(abnormal_return~Con*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
-
-interactions_bert &lt;- lm(abnormal_return~Bert*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
-
-stargazer(interactions_tone, interactions_unc, interactions_con, interactions_bert, column.labels = c(&quot;Tone&quot;, &quot;Unc&quot;, &quot;Con&quot;, &quot;Bert&quot;), header = F)</code></pre>
-<pre><code>## 
-## \begin{table}[!htbp] \centering 
-##   \caption{} 
-##   \label{} 
-## \begin{tabular}{@{\extracolsep{5pt}}lcccc} 
-## \\[-1.8ex]\hline 
-## \hline \\[-1.8ex] 
-##  &amp; \multicolumn{4}{c}{\textit{Dependent variable:}} \\ 
-## \cline{2-5} 
-## \\[-1.8ex] &amp; \multicolumn{4}{c}{abnormal\_return} \\ 
-##  &amp; Tone &amp; Unc &amp; Con &amp; Bert \\ 
-## \\[-1.8ex] &amp; (1) &amp; (2) &amp; (3) &amp; (4)\\ 
-## \hline \\[-1.8ex] 
-##  Tone &amp; 0.082 &amp;  &amp;  &amp;  \\ 
-##   &amp; (0.053) &amp;  &amp;  &amp;  \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  Unc &amp;  &amp; 0.143 &amp;  &amp;  \\ 
-##   &amp;  &amp; (0.094) &amp;  &amp;  \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  Con &amp;  &amp;  &amp; 0.147 &amp;  \\ 
-##   &amp;  &amp;  &amp; (0.126) &amp;  \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  Bert &amp;  &amp;  &amp;  &amp; $-$0.095 \\ 
-##   &amp;  &amp;  &amp;  &amp; (0.207) \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  debt\_equity &amp; 0.0001 &amp; 0.0001 &amp; 0.0001 &amp; $-$0.0002 \\ 
-##   &amp; (0.00004) &amp; (0.0001) &amp; (0.0001) &amp; (0.001) \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  IR &amp; $-$0.001 &amp; $-$0.001 &amp; $-$0.001 &amp; $-$0.001 \\ 
-##   &amp; (0.002) &amp; (0.001) &amp; (0.002) &amp; (0.001) \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  lagged\_return &amp; $-$0.154 &amp; $-$0.166 &amp; $-$0.116 &amp; $-$0.086 \\ 
-##   &amp; (0.158) &amp; (0.163) &amp; (0.161) &amp; (0.165) \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  Surprise &amp; 0.305$^{***}$ &amp; 0.356$^{***}$ &amp; 0.310$^{***}$ &amp; 0.279$^{***}$ \\ 
-##   &amp; (0.102) &amp; (0.107) &amp; (0.103) &amp; (0.103) \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  Tone:debt\_equity &amp; $-$0.0001 &amp;  &amp;  &amp;  \\ 
-##   &amp; (0.0002) &amp;  &amp;  &amp;  \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  Unc:debt\_equity &amp;  &amp; $-$0.0003 &amp;  &amp;  \\ 
-##   &amp;  &amp; (0.0003) &amp;  &amp;  \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  Con:debt\_equity &amp;  &amp;  &amp; $-$0.0003 &amp;  \\ 
-##   &amp;  &amp;  &amp; (0.0004) &amp;  \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  Bert:debt\_equity &amp;  &amp;  &amp;  &amp; 0.0002 \\ 
-##   &amp;  &amp;  &amp;  &amp; (0.001) \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  debt\_equity:Surprise &amp; $-$0.001$^{***}$ &amp; $-$0.001$^{***}$ &amp; $-$0.001$^{***}$ &amp; $-$0.001$^{**}$ \\ 
-##   &amp; (0.0002) &amp; (0.0002) &amp; (0.0002) &amp; (0.0002) \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-##  Constant &amp; $-$0.032$^{**}$ &amp; $-$0.041$^{*}$ &amp; $-$0.029 &amp; 0.082 \\ 
-##   &amp; (0.015) &amp; (0.022) &amp; (0.019) &amp; (0.193) \\ 
-##   &amp; &amp; &amp; &amp; \\ 
-## \hline \\[-1.8ex] 
-## Observations &amp; 76 &amp; 76 &amp; 76 &amp; 76 \\ 
-## R$^{2}$ &amp; 0.205 &amp; 0.190 &amp; 0.158 &amp; 0.135 \\ 
-## Adjusted R$^{2}$ &amp; 0.123 &amp; 0.106 &amp; 0.071 &amp; 0.046 \\ 
-## Residual Std. Error (df = 68) &amp; 0.010 &amp; 0.010 &amp; 0.010 &amp; 0.010 \\ 
-## F Statistic (df = 7; 68) &amp; 2.500$^{**}$ &amp; 2.272$^{**}$ &amp; 1.819$^{*}$ &amp; 1.514 \\ 
-## \hline 
-## \hline \\[-1.8ex] 
-## \textit{Note:}  &amp; \multicolumn{4}{r}{$^{*}$p$&lt;$0.1; $^{**}$p$&lt;$0.05; $^{***}$p$&lt;$0.01} \\ 
-## \end{tabular} 
-## \end{table}</code></pre>
-<pre class="r"><code>trial_tone&lt;-lm(abnormal_return~Tone + IR + lagged_return + Surprise + debt_equity, data=Core)
-trial_unc&lt;-lm(abnormal_return~Unc + IR + lagged_return + Surprise + debt_equity, data=Core)
-trial_con&lt;-lm(abnormal_return~Con + IR + lagged_return + Surprise + debt_equity, data=Core)
-
-stargazer(trial_tone, trial_unc, trial_con,
-          column.labels = c(&quot;Tone&quot;, &quot;Unc&quot;, &quot;Con&quot;), header = F)</code></pre>
+<h2>3. Methodology</h2>
+<p>Our analysis of equity returns following FOMC sentiment levels can be
+partitioned in two. The first part is sentiment extraction, wit our
+approach closely following that of Möller and Reichmann (2021), as well
+as an implementation of Google’s FinBERT NLP transformer for an
+alternative gaugue of the tone of FOMC minutes. The second part focuses
+on the construction of the variables needed in our regression, both core
+variables as are equity returns and sentiment, as well as various
+controls inspired by the paper from Möller and Reichmann.</p>
+<div id="sec-3.1-sentiment-extraction---vader-method" class="section level3">
+<h3>3.1 Sentiment Extraction - VADER Method</h3>
+<p>Our first approach to modelling the sentiment of FOMC minutes closely
+resembles that of Möller and Reichmann (2021), who use the NLTK VADER
+package in Python to extract sentiment. The VADER package is special
+insofar as it adjusts sentiment for heuristics, which gives it an
+advantage over conventional dictionary-based NLP methods (Hutto, 2014)
+<span class="citation">Hutto and Gilbert (2014)</span>. Furthermore,
+sentiment can be modeled for intensity as well, with Sentiment <span class="math inline">\(S \in [-4,4]\)</span>. Möller and Reichmann (2021)
+expand the inbuilt dictionary of words and corresponding stand-alone
+sentiment scores by financial terms that correspond to mere Tone,
+Uncertainty, as well as Constraining language, so as to be able to
+capture different dimensions of speech.</p>
+<p>Our approach to this was to update the lexicon in VADER as well,
+whereby our extraction of Tone merely necessitated the updating of the
+pre-existing lexicon. For Unc and Con, however, we used the libraries by
+Bodnaruk (2015) <span class="citation">Bodnaruk, Loughran, and McDonald
+(2015)</span> for constraining language and Loughran and McDonald (2011)
+<span class="citation">Loughran and McDonald (2011)</span> to construct
+scores for uncertain language and for extending the VADER dictionary by
+financial terms. To extract the nuances of uncertain and constraining
+language, the sentiment scores of all tokens not included in the
+respective external libraries received reduced sentiment scores, to 20%
+of their initial sentiment score. Meanwhile, the tokens from the
+libraries were weighted regularly, i.e. with sentiment scores <span class="math inline">\(S \in \{ 2, -2 \}\)</span>, as 2 is equivalent to
+moderate intensity in the VADER package. Adjusting every word’s
+sentiment score manually for its intensity was not deemed feasible for
+the scope of a project.</p>
+<p>Once these transformations took place, the FOMC data was tokenized
+into sentences, which were then tokenized for each constituent word. The
+sentiment score for every sentence is weighted by the word count in each
+sentence relative to the total word count in the statement.</p>
+<p>Finally, we constructed the three sentiment elements and saw their
+trajectory move as follows:</p>
+<p>In the plot above, we can see the trajectory of each sentiment
+element of FOMC minutes over time, along with the Fed’s interest rate,
+offering some interesting insights into the interplay between monetary
+policy, forward guidance and sentiment. Notably, as sentiment in FOMC
+minutes deteriorated in the periods of 2020, mostly attributable to the
+adverse impacts of COVID as well as in the period of 2021 to 2023,
+mostly attributable to the flare-ups of armed conflict around the world,
+a rise in interest rates would follow a drop in sentiment. This is a
+very interesting development, as historically a deterioration in
+economic outlook, i.e. during the time of the great financial crisis,
+lead to a decrease in interest rates. However, one must discriminate
+between sentiment deterioration lead by financial instability shocks
+which necessitate an injection of liquidity into capital markets, and
+the contemporary drivers of sentiment deterioration, which are
+geopolitical woes and inflationary pressures resulting from them.
+Whether it be Russian aggression or Houthi attacks on global commerce,
+these factors incessantly are inflationary phenomena from a monetary
+perspective. When looking at the graph, the amount of uncertainty around
+monetary policy seems to rise more poignantly as well, whereby the Fed
+seems to have turned to a less binding language, in line with that of
+the ECB, that points to more data-driven decision making and allows for
+more flexibility, so as to not cause volatility due to policy deviations
+and surprises, an occurrence forward guidance was meant to alleviate in
+the first place.</p>
+<p>Constraining language, interestingly, does seem to exhibit some form
+of relationship with tone, which could indicate that as economic
+conditions deteriorate, the Federal Reserve’s decision set is
+considerably reduced.</p>
+</div>
+<div id="sec-3.2-sentiment-extraction---finbert-method" class="section level3">
+<h3>3.2 Sentiment Extraction - FinBERT Method</h3>
+<p>Another route we took to sentiment construction was that of FinBERT.
+FinBERT is a transformer-based natural language processing model that
+can analyze phrases contextually by looking at both preceding and
+succeeding words, i.e. it is bidirectional, which our VADER approach is
+not. FinBERT is an adaptation of BERT which was a generalized sentiment
+analysis tool developed by Google, whereby Araci (2019) <span class="citation">Araci (2019)</span> trained it on an extensive corpus
+of financial data. Luckily for us, Chen et al. (2023) <span class="citation">Chen et al. (2023)</span> took it one step further and
+trained BERT on FOMC statement sentiment, which seemed like an ideal
+approach to pit our tone construction against in our analysis. Similarly
+to the approach with VADER, we constructed sentiments by BERT on a
+sentence by sentence basis and weighted every sentence by its relative
+word count.</p>
+<p>As a next step, we had to transform and prepare all of our financial
+data for analysis, which we delve into below.</p>
+</div>
+<div id="sec-3.3-financial-data-processing" class="section level3">
+<h3>3.3 Financial Data Processing</h3>
+<p>For every data point of our financial data, the last available
+datapoint was carried forward to the day of the FOMC minute issue,
+whereby returns were constructed via log-returns, in order to facilitate
+the computation of average returns in order to calculate abnormal
+returns. The abnormal returns, our independent variable of interest, was
+constructed using the model of MacKinlay (1997) <span class="citation">MacKinlay (1997)</span>, who computed abnormal returns
+as the of cumulative returns after an event over average returns over a
+period, in our case 3 years.</p>
+<p>Furthermore, we constructed a variable which captures the surprise
+effect of interest rate changes, in line with Möller and Reichmann’s
+(2021) method in order to truly isolate the effect of sentiment from the
+mechanical effect of interest rate levels. This variable was constructed
+via the difference of implied interest rate expectations from federal
+funds rate futures one day before the announcement and the actual
+interest rate that was announced.</p>
+<p>The point where we depart from the methodology of Möller and
+Reichmann (2021) is the fact that we also investigate the effects on
+returns for heterogeneity based on general debt levels of companies,
+essentially posing the question if returns react to negative sentiment
+more in times of high indebtedness.</p>
+</div>
+<div id="sec-3.4-regression-sepcifications" class="section level3">
+<h3>3.4 Regression Sepcifications</h3>
+<p>Looking at Table 1, the intuition seems to be correct. We can see
+neither of those sentiment variables are significant in our baseline
+regression. Model fit also seems to be an issue as the R2 and adjusted
+R2 are no way near 1. Therefore, we can shortly conclude, that only (for
+example) constraining messages or uncertainty messages from the FED will
+not impact abnormal returns by themselves. Regressing all sentiment
+variables in one model also does not seem to be the correct approach, as
+those sentiment variables might be correlated due to their nature. Also,
+the authors of the original paper stayed away from such an approach.
+Furthermore, the potential for confounding factors that cloud the effect
+that sentiment could have on returns is not taken into account here,
+which, given the diverse nature of the information set that capital
+markets absorb concurrently, does seem relevant.</p>
+<p>Because the sentiments alone do not seem to have the a significant
+standalone impact on abnormal returns, we start looking at different
+economic circumstances which could extract the partial impact of
+sentiments on abnormal returns. By adding a different variables one step
+at a time, we can fully grasp what impacts abnormal returns on “FED
+announcement days” and prevent overfitting, which could be an issue when
+looking at the fully specified model immediately. Firstly, a good
+variable to start off with is interest rates. Interest rates will paint
+the picture of monetary conditions in the economy at the moment. We
+therefore include IR into our models.</p>
+<div style="page-break-after: always;"></div>
+<p>Looking at Table 2, we unfortunately can see that there is still no
+significant impact on abnormal returns, when regressing the sentiments
+alongside interest rates. This would generally make sense as the
+prevailing interest rate is known to the market. It also can be argued
+that those sentiment scores and interest rates could possibly correlated
+a bit. High constraining language, by theory, could easily go hand in
+hand with higher interest rates, and so on. Model fit, i.e. R2 and
+adjusted R2 seemed to have also deteriorated by adding interest rates.
+The latter part is to be expected, as adjusted R2 takes adding variables
+into account via a penalty term. However, we still stick by our
+step-wise addition of variables in order to in the end arrive at a
+feasible model, where interest rates will likely not be included. We
+therefore built upon this model and added the lagged returns on in our
+model to account for any autoregressive impact of past returns on
+abnormal returns. We now regress abnormal returns on Tone, Con, Unc, as
+well as on IR and lagged_return.</p>
+<div style="page-break-after: always;"></div>
+<p>Unfortunately, looking at the results from table 3, there are still
+no significant impacts on abnormal returns, which is a bit
+disheartening. However, model fit seems to have improved a bit. We still
+have a lot more variables which could help our ordeal though. We now add
+a special variable which could be a key contributor in the process. The
+other variables are self-explanatory (for the most part) – but how was
+the Surprise variable constructed? It is, as mentioned above, the
+difference between the Federal Funds rate on announcement day and Fed
+Funds Futures as a gaugue for market expectations, i.e. the surprise
+effect of the interest rate change on the market. This means that, this
+variable will account for unexpected announcement results from the fed
+and discounts it.</p>
+<p>Analysing table 4, one can now start to understand why we think
+highly of the surprise variable. By adding surprise, we can now start to
+see how abnormal returns react to FED Statements. In our model now, Tone
+is significant. According to the authors, this indicates that a more
+positive (negative) language of the FED is associated with higher
+(lower) intraday abnormal returns. This is in line with the findings of
+Schmeling and Wagner (2019), who found that negative changes in the
+fraction of negative words within an introductory statement of an ECB
+press conferences have a positive influence on stock prices and a
+negative influence on volatility risk premia and credit spreads. We also
+find that, Surprise is significant in every model other than Unc. This
+can be explained, intuitively, as any information not included in the
+market price is bound to move it once it becomes available to its
+participants, which in the case of interest rates is on the day of the
+announcement.</p>
+<p>Last but not least, we include the debt to equity ratio of the index
+into our model. This variable tells us the rate of debt those firms have
+in relation to their equity. The higher this ratio is the higher the
+leverage of its firm, the more it might react to interest rates changes.
+This will now complete our intended model.</p>
+<p>As seen in Table 5, we still have a significant value of tone, but
+the significance of surprise has changed in some variables. Instead of
+our FinBERT sentiment being significant, uncertainty has now become
+significant. Generally an overall underperformance of the BERT approach
+seems to become evident, something that we will delve into later. A
+model which could become interesting is our model with interaction
+terms. The idea is that by adding interaction the effect of “Tone”,
+“Unc”, “Con”, “Bert” or “Surprise” on abnormal returns is moderated by
+the company’s leverage. In other words, the impact of these sentiment on
+returns may vary depending on the leverage ratio. This is intuitive as a
+company with higher leverage will be much more sensitive to changes in
+its cost of capital, and hence, sensitive to indications that such a
+cost of capital change could come. Such an indication is the sentiment
+of FOMC statements.</p>
+<p>We can see in Table 6 that, the interest rate surprises are highly
+significant by itself but also within its interaction term. This can be
+explained rather intuitively. If a company has high leverage it will
+have a significant impact on it’s performance by a “surprise” in
+interest rates, as they are more vulnerable to interest rates. However,
+again none of the base sentiment scores are significant on their own and
+in combination with the debt to equity ratio. This is a bit surprising,
+as one could have made an argument that firms with an higher (lower)
+leverage could have been more (less) vulnerable to FED statements as
+they are at the mercy of the monetary policy in place. Generally, it
+could be interpreted that companies with high leverage are especially
+susceptible to both interest rates as well as sentiment, as forward
+guidance tends to affect their projected cost of capital and their
+enterprise value more vigorously.</p>
+<p>Before we delve into our conclusion and our findings regarding the
+applicability of BERT vs. bespoke VADER, the interplay between
+indebtedness and the ensuing reaction of abnormal returns to monetary
+policy, we want to extend our analysis by one step that Möller and
+Reichmann (2021) did not delve into, namely the question of how feasible
+our model is given the dataset that we have created.</p>
+<p>Therefore, we now ensure the soundness of our models and the
+inclusion of our variables, especially of the interest rate variable
+which prompted a negative R2, via a bayesian model averaging algorithm.
+By cycling over all potential combinations of models, we want to
+ascertain the relative importance of each variable. The bayesian model
+averaging algorithm does so by determining the post-inclusion
+probability for each of our variables, including their interaction
+terms. We do so with the sentiment model that has proven most reliable
+so far, namely the model including Tone.</p>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+<div id="sec-4.-bayesian-model-averaging" class="section level2">
+<h2>4. Bayesian Model Averaging</h2>
+<p>After regressing everything and getting the results we do a final
+check via Baysian Model Averaging (BMA), where we can see which of the
+Variables from our Core data set truly are important to abnormal
+returns. This methodology is to check which variables have variable
+importance in a regression.</p>
+<pre><code>##                                 PIP     Post Mean      Post SD Cond.Pos.Sign
+## Surprise                  0.9893333  2.117946e-01 2.172644e-01    0.99966307
+## Tone                      0.9640000  2.039303e-02 2.530640e-02    1.00000000
+## debt_equity               0.8960000  1.383159e-05 2.308198e-05    0.99367560
+## IR                        0.8550000 -1.074633e-03 4.940470e-03    0.55360624
+## lagged_return             0.8250000 -4.784188e-02 4.273643e-01    0.43393939
+## Tone#Surprise             0.6386667 -2.397031e-01 2.894132e-01    0.03079332
+## IR#Surprise               0.5963333 -1.088384e-02 1.288721e-02    0.00000000
+## Surprise#debt_equity      0.5553333 -3.888405e-04 5.353283e-04    0.13325330
+## Tone#lagged_return        0.4286667 -5.083042e-01 8.723872e-01    0.00000000
+## lagged_return#Surprise    0.3206667  2.050702e-01 8.416125e-01    0.79313929
+## Tone#debt_equity          0.3170000 -7.569502e-06 6.967694e-05    0.25236593
+## IR#debt_equity            0.3166667  3.172480e-06 9.910019e-06    0.98210526
+## Tone#IR                   0.2956667 -3.528560e-04 7.306995e-03    0.29537768
+## lagged_return#debt_equity 0.2583333  2.500627e-04 1.021081e-03    0.96129032
+## lagged_return#IR          0.2193333  3.749336e-03 5.247306e-02    0.69148936
+##                           Idx
+## Surprise                    4
+## Tone                        1
+## debt_equity                 5
+## IR                          3
+## lagged_return               2
+## Tone#Surprise               8
+## IR#Surprise                13
+## Surprise#debt_equity       15
+## Tone#lagged_return          6
+## lagged_return#Surprise     11
+## Tone#debt_equity            9
+## IR#debt_equity             14
+## Tone#IR                     7
+## lagged_return#debt_equity  12
+## lagged_return#IR           10
+## 
+## Mean no. regressors               Draws             Burnins                Time 
+##            &quot;8.4760&quot;              &quot;3000&quot;              &quot;1000&quot;    &quot;0.7322001 secs&quot; 
+##  No. models visited      Modelspace 2^K           % visited         % Topmodels 
+##              &quot;2684&quot;             &quot;32768&quot;               &quot;8.2&quot;                &quot;86&quot; 
+##            Corr PMP            No. Obs.         Model Prior             g-Prior 
+##            &quot;0.4885&quot;                &quot;76&quot;     &quot;uniform / 7.5&quot;           &quot;numeric&quot; 
+##     Shrinkage-Stats 
+##            &quot;Av=0.5&quot; 
+## 
+## Time difference of 0.7322001 secs</code></pre>
+<pre><code>## Warning in mean.default(bmao$arguments$X.data[, 1]): argument is not numeric or
+## logical: returning NA</code></pre>
+<p><img src="data:image/png;base64,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gCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAoP8PSqJwnx5J1gkAAAAASUVORK5CYII=" width="672" /></p>
+<pre class="r"><code>bma</code></pre>
+<pre><code>##                                 PIP     Post Mean      Post SD Cond.Pos.Sign
+## Surprise                  0.9893333  2.117946e-01 2.172644e-01    0.99966307
+## Tone                      0.9640000  2.039303e-02 2.530640e-02    1.00000000
+## debt_equity               0.8960000  1.383159e-05 2.308198e-05    0.99367560
+## IR                        0.8550000 -1.074633e-03 4.940470e-03    0.55360624
+## lagged_return             0.8250000 -4.784188e-02 4.273643e-01    0.43393939
+## Tone#Surprise             0.6386667 -2.397031e-01 2.894132e-01    0.03079332
+## IR#Surprise               0.5963333 -1.088384e-02 1.288721e-02    0.00000000
+## Surprise#debt_equity      0.5553333 -3.888405e-04 5.353283e-04    0.13325330
+## Tone#lagged_return        0.4286667 -5.083042e-01 8.723872e-01    0.00000000
+## lagged_return#Surprise    0.3206667  2.050702e-01 8.416125e-01    0.79313929
+## Tone#debt_equity          0.3170000 -7.569502e-06 6.967694e-05    0.25236593
+## IR#debt_equity            0.3166667  3.172480e-06 9.910019e-06    0.98210526
+## Tone#IR                   0.2956667 -3.528560e-04 7.306995e-03    0.29537768
+## lagged_return#debt_equity 0.2583333  2.500627e-04 1.021081e-03    0.96129032
+## lagged_return#IR          0.2193333  3.749336e-03 5.247306e-02    0.69148936
+##                           Idx
+## Surprise                    4
+## Tone                        1
+## debt_equity                 5
+## IR                          3
+## lagged_return               2
+## Tone#Surprise               8
+## IR#Surprise                13
+## Surprise#debt_equity       15
+## Tone#lagged_return          6
+## lagged_return#Surprise     11
+## Tone#debt_equity            9
+## IR#debt_equity             14
+## Tone#IR                     7
+## lagged_return#debt_equity  12
+## lagged_return#IR           10
+## 
+## Mean no. regressors               Draws             Burnins                Time 
+##            &quot;8.4760&quot;              &quot;3000&quot;              &quot;1000&quot;    &quot;0.7322001 secs&quot; 
+##  No. models visited      Modelspace 2^K           % visited         % Topmodels 
+##              &quot;2684&quot;             &quot;32768&quot;               &quot;8.2&quot;                &quot;86&quot; 
+##            Corr PMP            No. Obs.         Model Prior             g-Prior 
+##            &quot;0.4885&quot;                &quot;76&quot;     &quot;uniform / 7.5&quot;           &quot;numeric&quot; 
+##     Shrinkage-Stats 
+##            &quot;Av=0.5&quot;</code></pre>
+<p>Of the variables we included in the final model on table 6, the
+interaction term of tone and debt to equity falls visibly below our
+threshold, prompting us to rely mostly on the analysis on table 5 for
+interpretation, i.e. our slight extension of Möller and Reichmann
+(2021).</p>
+</div>
+<div id="sec-5.-potential-for-future-research" class="section level2">
+<h2>5. Potential for Future Research</h2>
+<p>Considering the fact that FED statements have been forced to consider
+significant humanitarian crises such as the outbreak of the COVID-19
+pandemic (First Lockdown in the U.S. began on March 12th, 2020), the
+invasion of Russia into Ukraine (February 24th, 2022 - immediatly after
+economical from COVID began the lessen) and the Hamas terrorist attack
+on Israel and the war following after (since October 7th, 2023), there
+exists an avenue for future research.</p>
+<p>While the U.S. interest rate policy must inevitably take into account
+global geopolitical events, it can only incorporate them to a limited
+extent.This means that a discrepancy between the U.S.-focused and more
+“fact-based” interest rate and the more “human” statements will likely
+occur, as shown in the graph in Chapter 3.3. Future research could seek
+to find a way to quantify the difference between economically relevant
+word-combinations by refining linguistic analysis methods, adjusting
+dictionaries, and filtering out word combinations that may focus on
+factors irrelevant to immediate, upcoming policy, thereby emphasizing a
+more financially centered context.</p>
+<p>This research potential especially becomes apparent when observing
+the disparity between the overall trend the SPX shows since the
+“COVID-Crash” in March 2020 - particularly the clear positive trend
+since the beginning of 2023 - and the language employed by the FED in
+its statements since the beginning of the recorded statements in the
+data used. As mentioned, future research may seek to refine the
+dictionaries used and isolate sentences or word-combinations related to
+unforeseen geopolitical events, that cannot be ignored in a statement by
+a governing body.</p>
+<p><img src="data:image/png;base64,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" width="672" /></p>
+</div>
+<div id="conclusion" class="section level2">
+<h2>6. Conclusion</h2>
+<div style="page-break-after: always;"></div>
 </div>
 <div id="sec-bibliography" class="section level2 unnumbered">
-<h2 class="unnumbered">Bibliography</h2>
+<h2 class="unnumbered">7. Bibliography</h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-araci2019finbert" class="csl-entry">
+Araci, Dogu. 2019. <span>“Finbert: Financial Sentiment Analysis with
+Pre-Trained Language Models.”</span> <em>arXiv Preprint
+arXiv:1908.10063</em>.
+</div>
+<div id="ref-bodnaruk2015using" class="csl-entry">
+Bodnaruk, Andriy, Tim Loughran, and Bill McDonald. 2015. <span>“Using
+10-k Text to Gauge Financial Constraints.”</span> <em>Journal of
+Financial and Quantitative Analysis</em> 50 (4): 623–46.
+</div>
+<div id="ref-chen2023finbert" class="csl-entry">
+Chen, Ziwei, Sandro Gössi, Wonseong Kim, Bernhard Bermeitinger, and
+Siegfried Handschuh. 2023. <span>“FinBERT-FOMC: Fine-Tuned FinBERT Model
+with Sentiment Focus Method for Enhancing Sentiment Analysis of FOMC
+Minutes.”</span>
+</div>
+<div id="ref-hutto2014vader" class="csl-entry">
+Hutto, Clayton, and Eric Gilbert. 2014. <span>“Vader: A Parsimonious
+Rule-Based Model for Sentiment Analysis of Social Media Text.”</span> In
+<em>Proceedings of the International AAAI Conference on Web and Social
+Media</em>, 8:216–25. 1.
+</div>
+<div id="ref-loughran2011liability" class="csl-entry">
+Loughran, Tim, and Bill McDonald. 2011. <span>“When Is a Liability Not a
+Liability? Textual Analysis, Dictionaries, and 10-Ks.”</span> <em>The
+Journal of Finance</em> 66 (1): 35–65.
+</div>
+<div id="ref-mackinlay1997event" class="csl-entry">
+MacKinlay, A Craig. 1997. <span>“Event Studies in Economics and
+Finance.”</span> <em>Journal of Economic Literature</em> 35 (1): 13–39.
+</div>
 <div id="ref-Möller2021" class="csl-entry">
 Möller, Rouven, and Doron Reichmann. 2021b. <span>“ECB Language and
 Stock Returns <span></span> a Textual Analysis of ECB Press

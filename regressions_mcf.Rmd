@@ -207,7 +207,8 @@ Core$Surprise<-IR_Surprises
 Core$debt_equity<- SPX_DE$Net_Debt_Share
 ```
 
-```{r Simple Models, results='asis'}
+Looking at Table 1, the intuition seems to be correct. We can see neither of those sentiment variables are significant in our baseline regression. Model fit also seems to be an issue as the R2 and adjusted R2 are no way near 1. Therefore, we can shortly conclude, that only (for example) constraining messages or uncertainty messages from the FED will not impact abnormal returns by themselves. Regressing all sentiment variables in one model also does not seem to be the correct approach, as those sentiment variables might be correlated due to their nature. Also, the authors of the original paper stayed away from such an approach. Furthermore,
+```{r Simple Models, results='asis',echo=FALSE}
 simple_tone <- lm(abnormal_return ~ Tone, data = Core)
 simple_unc <- lm(abnormal_return ~ Unc, data = Core)
 simple_con <- lm(abnormal_return ~ Con, data = Core)
@@ -216,16 +217,16 @@ simple_bert <- lm(abnormal_return ~ Bert, data = Core)
 stargazer(simple_tone, simple_con, simple_unc, simple_bert, column.labels = c("Tone", "Unc", "Con", "Bert"), header = F)
 
 ```
-Looking at Table 1, the intuition seems to be correct. We can see neither of those sentiment variables are significant in our baseline regression. Model fit also seems to be an issue as the R2 and adjusted R2 are no way near 1. Therefore, we can shortly conclude, that only (for example) constraining messages or uncertainty messages from the FED will not impact abnormal returns by themselves. Regressing all sentiment variables in one model also does not seem to be the correct approach, as those sentiment variables might be correlated due to their nature. Also, the authors of the original paper stayed away from such an approach. Furthermore, the potential for confounding factors that cloud the effect that sentiment could have on returns is not taken into account here, which, given the diverse nature of the information set that capital markets absorb concurrently, does seem relevant. 
+the potential for confounding factors that cloud the effect that sentiment could have on returns is not taken into account here, which, given the diverse nature of the information set that capital markets absorb concurrently, does seem relevant. 
 
 Because the sentiments alone do not seem to have the a significant standalone impact on abnormal returns, we start looking at different economic circumstances which could extract the partial impact of sentiments on abnormal returns. By adding a different variables one step at a time, we can fully grasp what impacts abnormal returns on “FED announcement days” and prevent overfitting, which could be an issue when looking at the fully specified model immediately. Firstly, a good variable to start off with is interest rates. Interest rates will paint the picture of monetary conditions in the economy at the moment. We therefore include IR into our models.
 
-
-
-
 \pagebreak
 
-```{r Models including IR, echo=TRUE, results='asis'}
+
+
+
+```{r Models including IR, echo=FALSE, results='asis'}
 simple_tone_IR <- lm(abnormal_return~Tone + IR, data = Core)
 simple_unc_IR <- lm(abnormal_return~Unc + IR, data = Core)
 simple_con_IR <- lm(abnormal_return~Con + IR, data = Core)
@@ -241,7 +242,7 @@ However, we still stick by our step-wise addition of variables in order to in th
 \pagebreak
 
 
-```{r Models including LR, results='asis'}
+```{r Models including LR, results='asis',echo=FALSE}
 simple_tone_LR <- lm(abnormal_return ~ Tone + IR + lagged_return, data = Core)
 simple_unc_LR <- lm(abnormal_return ~ Unc + IR + lagged_return, data = Core)
 simple_con_LR <- lm(abnormal_return ~ Con + IR + lagged_return, data = Core)
@@ -252,9 +253,11 @@ stargazer(simple_tone_LR, simple_con_LR, simple_unc_LR, simple_bert_LR, column.l
 
 Unfortunately, looking at the results from table 3, there are still no significant impacts on abnormal returns, which is a bit disheartening. However, model fit seems to have improved a bit. We still have a lot more variables which could help our ordeal though. We now add a special variable which could be a key contributor in the process. The other variables are self-explanatory (for the most part) – but how was the Surprise variable constructed? It is, as mentioned above, the difference between the Federal Funds rate on announcement day and Fed Funds Futures as a gaugue for market expectations, i.e. the surprise effect of the interest rate change on the market. This means that, this variable will account for unexpected announcement results from the fed and discounts it. 
 
+\pagebreak
 
 
-```{r Models including SUR, results='asis'}
+
+```{r Models including SUR, results='asis',echo=FALSE}
 simple_tone_SUR <- lm(abnormal_return ~ Tone + IR + lagged_return + Surprise, data = Core)
 simple_unc_SUR <- lm(abnormal_return ~ Unc + IR + lagged_return + Surprise, data = Core)
 simple_con_SUR <- lm(abnormal_return ~ Con + IR + lagged_return + Surprise, data = Core)
@@ -265,15 +268,13 @@ stargazer(simple_tone_SUR, simple_unc_SUR, simple_con_SUR, simple_bert_SUR, colu
 ```
 Analysing table 4, one can now start to understand why we think highly of the surprise variable. By adding surprise, we can now start to see how abnormal returns react to FED Statements. In our model now, Tone is significant. According to the authors, this indicates that a more positive (negative) language of the FED is associated with higher (lower) intraday abnormal returns. This is in line with the findings of Schmeling and Wagner (2019), who found that negative changes in the fraction of negative words within an introductory statement of an ECB press conferences have a positive influence on stock prices and a negative influence on volatility risk premia and credit spreads. We also find that, Surprise is significant in every model other than Unc. This can be explained, intuitively, as any information not included in the market price is bound to move it once it becomes available to its participants, which in the case of interest rates is on the day of the announcement.
 
-Last but not least, we include the debt to equity ratio of the index into our model. This variable tells us the rate of debt those firms have in relation to their equity. The higher this ratio is the higher the leverage of its firm, the more it might react to interest rates changes. This will now complete our intended model. However, before we delve into that analysis, we must ensure the soundness of our model. Up to this point, the model was constructed following Möller and Reichmann (2021). Including a variable for indebtedness would hence depart from their analysis and open an additional avenue of investigation, on top of the one we opened by investigating whether a "plug and play" NLP program such as BERT would clearly outperform a more bespoke approach, as conducted by Möller and Reichmann (2021).
-
-Therefore, we now ensure the soundness of our models and the inclusion of our variables, especially of the interest rate variable which prompted a negative R2, via a bayesian model averaging algorithm. By cycling over all potential combinations of models, we want to ascertain the relative importance of each variable. The bayesian model averaging algorithm does so by determining the post-inclusion probability for each of our variables. We see that....
+Last but not least, we include the debt to equity ratio of the index into our model. This variable tells us the rate of debt those firms have in relation to their equity. The higher this ratio is the higher the leverage of its firm, the more it might react to interest rates changes. This will now complete our intended model. 
 
 
 
 
 
-```{r Models including DE, results='asis'}
+```{r Models including DE, results='asis',echo=FALSE}
 simple_tone_DE <- lm(abnormal_return ~ Tone + IR + lagged_return + Surprise + debt_equity, data = Core)
 simple_unc_DE <- lm(abnormal_return ~ Con + IR + lagged_return + Surprise + debt_equity, data = Core)
 simple_con_DE <- lm(abnormal_return ~ Con + IR + lagged_return + Surprise + debt_equity, data = Core)
@@ -284,12 +285,14 @@ stargazer(simple_tone_DE, simple_unc_DE, simple_con_DE, simple_bert_DE, column.l
 ```
 
 As seen in Table 5, we still have a significant value of tone, but the significance of surprise has changed in some variables. Instead of our FinBERT sentiment being significant, uncertainty has now become significant. Generally an overall underperformance of the BERT approach seems to become evident, something that we will delve into later.
-A model which could become interesting is our model with interaction terms. The idea is that by adding interaction the effect of "Tone", "Unc", "Con", "Bert" or "Surprise" on abnormal returns is moderated by the company's leverage. In other words, the impact of these sentiment on returns may vary depending on the leverage ratio. This is intuitive as a company with higher leverage will be much more sensitive to changes in its cost of capital, and hence, sensitive to indications that such a cost of capital change could come. Such an indication is the sentiment of FOMC statements.
+A model which could become interesting is our model with interaction terms. The idea is that by adding interaction the effect of "Tone", "Unc", "Con", "Bert" or "Surprise" on abnormal returns is moderated by the company's leverage. In other words, the impact of these sentiment on returns may vary depending on the leverage ratio. This is intuitive as a company with higher leverage will be much more sensitive to changes in its cost of capital, and hence, sensitive to indications that such a cost of capital change could come. Such an indication is the sentiment of FOMC statements. 
 
 
 
 
-```{r, results='asis'}
+
+
+```{r, results='asis',echo=FALSE}
 interactions_tone <- lm(abnormal_return ~ Tone * debt_equity + IR + lagged_return + Surprise * debt_equity + debt_equity, data = Core)
 
 interactions_unc<-lm(abnormal_return~Unc*debt_equity + IR + lagged_return + Surprise*debt_equity + debt_equity, data=Core)
@@ -302,24 +305,21 @@ stargazer(interactions_tone, interactions_unc, interactions_con, interactions_be
 
 ```
 
-```{r "Trial", results='asis'}
-trial_tone<-lm(abnormal_return~Tone + IR + lagged_return + Surprise + debt_equity, data=Core)
-trial_unc<-lm(abnormal_return~Unc + IR + lagged_return + Surprise + debt_equity, data=Core)
-trial_con<-lm(abnormal_return~Con + IR + lagged_return + Surprise + debt_equity, data=Core)
-trial_bert<-lm(abnormal_return~Bert + IR + lagged_return + Surprise + debt_equity, data=Core)
 
-stargazer(trial_tone, trial_unc, trial_con, trial_bert,
-          column.labels = c("Tone", "Unc", "Con", "Bert"), header = F)
-```
+We can see in Table 6 that, the interest rate surprises are highly significant by itself but also within its interaction term. This can be explained rather intuitively. If a company has high leverage it will have a significant impact on it’s performance by a “surprise” in interest rates, as they are more vulnerable to interest rates. However, again none of the base sentiment scores are significant on their own and in combination with the debt to equity ratio. This is a bit surprising, as one could have made an argument that firms with an higher (lower) leverage could have been more (less) vulnerable to FED statements as they are at the mercy of the monetary policy in place. Generally, it could be interpreted that companies with high leverage are especially susceptible to both interest rates as well as sentiment, as forward guidance tends to affect their projected cost of capital and their enterprise value more vigorously.
+
+Before we delve into our conclusion and our findings regarding the applicability of BERT vs. bespoke VADER, the interplay between indebtedness and the ensuing reaction of abnormal returns to monetary policy, we want to extend our analysis by one step that  Möller and Reichmann (2021) did not delve into, namely the question of how feasible our model is given the dataset that we have created.
+
+Therefore, we now ensure the soundness of our models and the inclusion of our variables, especially of the interest rate variable which prompted a negative R2, via a bayesian model averaging algorithm. By cycling over all potential combinations of models, we want to ascertain the relative importance of each variable. The bayesian model averaging algorithm does so by determining the post-inclusion probability for each of our variables, including their interaction terms. We do so with the sentiment model that has proven most reliable so far, namely the model including Tone.
+
+
+\pagebreak
 
 ## 4. Bayesian Model Averaging {#sec-4.-bayesian-model-averaging}
 
-After regressing everything and getting the results we do a final check via Baysian Model Averaging (BMA), where we can see which of the Variables from our Core data set truly are important to abnormal returns. This methodology is to check which variables have variable importance in a regression.
+After regressing everything and getting the results we do a final check via Baysian Model Averaging (BMA), where we can see which of the Variables from our Core data set truly are important to abnormal returns. This methodology is to check which variables have the highest comparative importance in a plethora of potential models that include all of our variables, along with interaction terms and both of their parent terms. The 
 
-```{r}
-
-
-
+```{r, include=FALSE, echo=FALSE}
 # Defining the Model
 abnormal_return_model <- Core$abnormal_return ~ Core$Tone + Core$Unc + Core$Con + Core$Bert + Core$IR + Core$lagged_return + Core$Surprise + Core$debt_equity
 
@@ -328,15 +328,40 @@ bms_results <- bms(abnormal_return_model)
 
 ```
 
-## 5. Potential for Future Research {#sec-5.-potential-for-future-research}
+```{r, echo=FALSE, warning=FALSE}
 
-Considering the fact that FED statements have been forced to consider significant humanitarian crises such as the outbreak of the COVID-19 pandemic (First Lockdown in the U.S. began on March 12th, 2020), the invasion of Russia into Ukraine (February 24th, 2022 - immediatly after economical from COVID began the lessen) and the Hamas terrorist attack on Israel and the war following after (since October 7th, 2023), there exists an avenue for future research.
+# Assuming Core is your original dataset and corebma is the subset you want to use
+corebma <- na.omit(Core[,-c(1,3,4,5,6,7)])
 
-While the U.S. interest rate policy must inevitably take into account global geopolitical events, it can only incorporate them to a limited extent.This means that a discrepancy between the U.S.-focused and more "fact-based" interest rate and the more "human" statements will likely occur, as shown in the graph in Chapter 3.3. Future research could seek to find a way to quantify the difference between economically relevant word-combinations by refining linguistic analysis methods, adjusting dictionaries, and filtering out word combinations that may focus on factors irrelevant to immediate, upcoming policy, thereby emphasizing a more financially centered context.
+corebma <- mutate_all(corebma, function(x) as.numeric(as.character(x)))
 
-This research potential especially becomes apparent when observing the disparity between the overall trend the SPX shows since the "COVID-Crash" in March 2020 - particularly the clear positive trend since the beginning of 2023 - and the language employed by the FED in its statements since the beginning of the recorded statements in the data used. As mentioned, future research may seek to refine the dictionaries used and isolate sentences or word-combinations related to unforeseen geopolitical events, that cannot be ignored in a statement by a governing body.
+# Ensure 'abnormal_return' is the first column as it is the dependent variable
+corebma <- corebma[c("abnormal_return", setdiff(names(corebma), "abnormal_return"))]
 
-```{r}
+# Identify the independent variables
+independent_vars <- setdiff(names(corebma), "abnormal_return")
+
+# Create all two-way interactions between independent variables
+for(i in 1:(length(independent_vars)-1)){
+  for(j in (i+1):length(independent_vars)){
+    interaction_term <- paste(independent_vars[i], independent_vars[j], sep="#")
+    corebma[[interaction_term]] <- corebma[[independent_vars[i]]] * corebma[[independent_vars[j]]]
+  }
+}
+
+# Now corebma includes 'abnormal_return' as the first column and all two-way interaction terms
+# Run bms with the expanded corebma
+bma <- bms(corebma, burn = 1000, iter = 3000, g = 1, mprior = "uniform", mcmc = "bd.int")
+```
+
+Of the variables we included in the final model on table 6, the interaction term of tone and debt to equity falls visibly below our threshold, prompting us to rely mostly on the analysis on table 5 for interpretation, i.e. our slight extension of Möller and Reichmann (2021). This threshold is 50% and refers to the post-inclusion probability of a variable. Looking back at table 5, we can see one very rudimental thing, namely the fact that the variation in abnormal returns seems to be best explained by the model with Tone as its sentiment variable. Conversely, throughout the majority of specifications, the BERT language processor seems to exhibit lackluster performance. This may be due to the fact that the VADER approach may be better-suited for analyzing text that in its content and structure may be similar, as opposed to heterogeneous news or rather Tweets, which BERT was initially designed around. Furthermore, as intuition would suggest as well, market participants and followers of the FOMC do not try and dissect fed speeches into their respective sentiment components, but rather try to eke out the change in tone, or the mood which the speech is conveying. Based on that, transactions are made and hence, Tone would be a plausible front-runner in explaining returns out of the three VADER-based sentiment components.
+
+## 4.1. A brief excursion into the stability of the Tone Effect over time
+
+As a mild robustness check, we wanted to see, as best possible with our limited data, whether the tone variable can be considered stable over time, i.e. whether sentiment effects have temporary dependence. To that end, we investigated the last 50 statement effects at the earliest possible date and arrived at the following visualization, where the coefficient for tone along with its standard error bands are plotted. 
+
+
+```{r, echo=FALSE}
 
 window<- 50
 
@@ -359,14 +384,14 @@ Tone_SE<- c(Tone_SE,reg$coefficients[8])
 # add 0-line to get significance right at 10%
 ```
 
-```{r}
+```{r, echo=FALSE}
 upper_Tone<- Tone+Tone_SE
 lower_Tone<- Tone-Tone_SE
 plotbands<-data.frame(cbind(Tone, lower_Tone,upper_Tone))
 plotbands$date<-as.POSIXct(RegressionDates)
 ```
 
-```{r}
+```{r, echo=FALSE}
 
 ggplot(plotbands, aes(x = RegressionDates, y = Tone)) +
   geom_ribbon(aes(ymin = lower_Tone, ymax = upper_Tone),
@@ -377,7 +402,25 @@ ggplot(plotbands, aes(x = RegressionDates, y = Tone)) +
 
 ```
 
+
+
+Below, we will further delve into the potential avenues for future research, however, this may be one element to consider in any future endeavor as well, and may open up an interesting research question of investigating heterogeneous market sensitivities to FOMC sentiment, e.g. during periods of high uncertainty versus "regular" ones. In any case, we do see the coefficient of Tone remaining roughly within the band of 0.03 to 0.04, thereby exhibiting a rather stable behavior over time, albeit with the caveat of a limited sample of only 26 dates, which, along with their 49 preceding statements were regressed over to construct the one of the 26 datapoints in the plot.
+
+
+## 5. Potential for Future Research {#sec-5.-potential-for-future-research}
+
+Considering the fact that FED statements have been forced to consider significant humanitarian crises such as the outbreak of the COVID-19 pandemic (First Lockdown in the U.S. began on March 12th, 2020), the invasion of Russia into Ukraine (February 24th, 2022 - immediatly after economical from COVID began the lessen) and the Hamas terrorist attack on Israel and the war following after (since October 7th, 2023), there exists an avenue for future research.
+
+While the U.S. interest rate policy must inevitably take into account global geopolitical events, it can only incorporate them to a limited extent.This means that a discrepancy between the U.S.-focused and more "fact-based" interest rate and the more "human" statements will likely occur, as shown in the graph in Chapter 3.3. Future research could seek to find a way to quantify the difference between economically relevant word-combinations by refining linguistic analysis methods, adjusting dictionaries, and filtering out word combinations that may focus on factors irrelevant to immediate, upcoming policy, thereby emphasizing a more financially centered context.
+
+This research potential especially becomes apparent when observing the disparity between the overall trend the SPX shows since the "COVID-Crash" in March 2020 - particularly the clear positive trend since the beginning of 2023 - and the language employed by the FED in its statements since the beginning of the recorded statements in the data used. As mentioned, future research may seek to refine the dictionaries used and isolate sentences or word-combinations related to unforeseen geopolitical events, that cannot be ignored in a statement by a governing body.
+
+
+
 ## 6. Conclusion
+Our analysis allows us to make a plethora of conclusions. First, 
+
+
 
 \pagebreak
 
