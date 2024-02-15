@@ -399,7 +399,7 @@ ggplot(plotbands, aes(x = RegressionDates, y = Tone)) +
   geom_ribbon(aes(ymin = lower_Tone, ymax = upper_Tone),
               fill = "lightblue", alpha = 0.5) +
   geom_line(color = "blue") +
-  labs(title = "Time Series with Error Bands",
+  labs(title = "Effect of Tone over time, regressions on a 50 Statement Window",
        x = "Time", y = "Value")
 
 ```
@@ -417,11 +417,12 @@ While the U.S. interest rate policy must inevitably take into account global geo
 
 This research potential especially becomes apparent when observing the disparity between the overall trend the SPX shows since the "COVID-Crash" in March 2020 - particularly the clear positive trend since the beginning of 2023 - and the language employed by the FED in its statements since the beginning of the recorded statements in the data used. As mentioned, future research may seek to refine the dictionaries used and isolate sentences or word-combinations related to unforeseen geopolitical events, that cannot be ignored in a statement by a governing body.
 
+Additionally, we have seen Tone have a significant effect and being a valuable variable in explaining abnormal stock returns. This opens up the avenue of including sentiment as an additional factor in equity return models. Another promising avenue of research would be a deeper dive into the model differences between VADER and BERT, especially when it comes to assigning sentiment to texts that are less heterogeneous, as are FOMC statements or other texts with more standardized structure and language.
+
 
 
 ## 6. Conclusion
-Our analysis allows us to make a plethora of conclusions. First, 
-
+Our analysis allows us to make a plethora of conclusions. First, we can see an almost twofold increase of explanatory capability when it comes to Tone vs. BERT, indicating that more homogeneous texts lend themselves better to sentiment analysis via heuristics adjusted dictionary approaches as is VADER. Secondly, we can also see that the mechanical component of FOMC statements, i.e. the interest rate announcement and the surprise it entails, is a non-negligible factor that should be included in central bank statement analyses to avoid biased estimates. Third, we could observe an ever so slight sensitivity of higher leverage periods with regards to said surprises. Finally, this research laid the foundations for us to further investigate the highly intriguing intersection between natural language processing and financial markets in an event-study context.
 
 
 \pagebreak
