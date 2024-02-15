@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.12) (preloaded format=pdflatex 2023.1.16)  15 FEB 2024 16:43
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.12) (preloaded format=pdflatex 2023.1.16)  15 FEB 2024 17:23
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**./regressions_mcf.tex
-(regressions_mcf.tex
+**./Paper-with-code.tex
+(Paper-with-code.tex
 LaTeX2e <2022-11-01> patch level 1
 L3 programming layer <2022-12-17> (C:\Users\Pjeter\AppData\Local\Programs\MiKTe
 X 2.9\tex/latex/base\article.cls
@@ -264,6 +264,24 @@ Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 
 (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/geometry\geometry.
 cfg))
+(C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/fancyvrb\fancyvrb.
+sty
+Package: fancyvrb 2022/06/06 4.5 verbatim text (tvz,hv)
+\FV@CodeLineNo=\count277
+\FV@InFile=\read2
+\FV@TabBox=\box54
+\c@FancyVerbLine=\count278
+\FV@StepNumber=\count279
+\FV@OutFile=\write3
+) (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/framed\framed.st
+y
+Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
+\OuterFrameSep=\skip54
+\fb@frw=\dimen159
+\fb@frh=\dimen160
+\FrameRule=\dimen161
+\FrameSep=\dimen162
+)
 (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/graphics\graphicx.
 sty
 Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
@@ -280,31 +298,31 @@ File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: pdftex.def on input line 107.
 )
-\Gin@req@height=\dimen159
-\Gin@req@width=\dimen160
+\Gin@req@height=\dimen163
+\Gin@req@width=\dimen164
 )
-\cslhangindent=\skip54
-\csllabelwidth=\skip55
-\cslentryspacingunit=\skip56
+\cslhangindent=\skip55
+\csllabelwidth=\skip56
+\cslentryspacingunit=\skip57
 (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/tools\calc.sty
 Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
-\calc@Acount=\count277
-\calc@Bcount=\count278
-\calc@Adimen=\dimen161
-\calc@Bdimen=\dimen162
-\calc@Askip=\skip57
-\calc@Bskip=\skip58
+\calc@Acount=\count280
+\calc@Bcount=\count281
+\calc@Adimen=\dimen165
+\calc@Bdimen=\dimen166
+\calc@Askip=\skip58
+\calc@Bskip=\skip59
 LaTeX Info: Redefining \setlength on input line 80.
 LaTeX Info: Redefining \addtolength on input line 81.
-\calc@Ccount=\count279
-\calc@Cskip=\skip59
+\calc@Ccount=\count282
+\calc@Cskip=\skip60
 ) (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/float\float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count280
+\c@float@type=\count283
 \float@exts=\toks26
-\float@box=\box54
+\float@box=\box55
 \@float@everytoks=\toks27
-\@floatcapt=\box55
+\@floatcapt=\box56
 ) (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/lipsum\lipsum.st
 y
 (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/l3packages/l3keys2
@@ -315,15 +333,15 @@ Package: expl3 2022-12-17 L3 programming layer (loader)
 (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/l3backend\l3backen
 d-pdftex.def
 File: l3backend-pdftex.def 2022-10-26 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count281
-\l__pdf_internal_box=\box56
+\l__color_backend_stack_int=\count284
+\l__pdf_internal_box=\box57
 ))
 Package: l3keys2e 2023-10-10 LaTeX2e option processing using LaTeX3 keys
 )
 Package: lipsum 2021-09-20 v2.7 150 paragraphs of Lorem Ipsum dummy text
-\g__lipsum_par_int=\count282
-\l__lipsum_a_int=\count283
-\l__lipsum_b_int=\count284
+\g__lipsum_par_int=\count285
+\l__lipsum_a_int=\count286
+\l__lipsum_b_int=\count287
 
 (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/lipsum\lipsum.ltd.
 tex))
@@ -380,11 +398,11 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 ettitlestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count285
+\c@section@level=\count288
 )
-\@linkdim=\dimen163
-\Hy@linkcounter=\count286
-\Hy@pagecounter=\count287
+\@linkdim=\dimen167
+\Hy@linkcounter=\count289
+\Hy@pagecounter=\count290
 
 (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/hyperref\pd1enc.de
 f
@@ -400,7 +418,7 @@ Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
 s.sty
 Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
 )
-\Hy@SavedSpaceFactor=\count288
+\Hy@SavedSpaceFactor=\count291
 
 (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/hyperref\puenc.def
 File: puenc.def 2022-11-13 v7.00u Hyperref: PDF Unicode definition (HO)
@@ -415,13 +433,13 @@ Package hyperref Info: Plain pages OFF on input line 4177.
 Package hyperref Info: Backreferencing OFF on input line 4182.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4410.
-\c@Hy@tempcnt=\count289
+\c@Hy@tempcnt=\count292
 (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/url\url.sty
 \Urlmuskip=\muskip17
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 LaTeX Info: Redefining \url on input line 4748.
-\XeTeXLinkMargin=\dimen164
+\XeTeXLinkMargin=\dimen168
 
 (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/generic/bitset\bitset.st
 y
@@ -432,9 +450,9 @@ tcalc.sty
 Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
 )
 ))
-\Fld@menulength=\count290
-\Field@Width=\dimen165
-\Fld@charsize=\dimen166
+\Fld@menulength=\count293
+\Field@Width=\dimen169
+\Fld@charsize=\dimen170
 Package hyperref Info: Hyper figures OFF on input line 6027.
 Package hyperref Info: Link nesting OFF on input line 6032.
 Package hyperref Info: Hyper index ON on input line 6035.
@@ -448,9 +466,9 @@ sty
 Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
 package with kernel methods
 )
-\Hy@abspage=\count291
-\c@Item=\count292
-\c@Hfootnote=\count293
+\Hy@abspage=\count294
+\c@Item=\count295
+\c@Hfootnote=\count296
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
 
@@ -464,8 +482,8 @@ Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend pac
 kage
 with kernel methods
 )
-\Fld@listcount=\count294
-\c@bookmark@seq@number=\count295
+\Fld@listcount=\count297
+\c@bookmark@seq@number=\count298
 
 (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/rerunfilecheck\rer
 unfilecheck.sty
@@ -478,15 +496,15 @@ Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 85.
 )
-\Hy@SectionHShift=\skip60
+\Hy@SectionHShift=\skip61
 )
 (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/bookmark\bkm-pdfte
 x.def
 File: bkm-pdftex.def 2020-11-06 v1.29 bookmark driver for pdfTeX (HO)
-\BKM@id=\count296
+\BKM@id=\count299
 )) (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/xurl\xurl.sty
 Package: xurl 2022/01/09 v 0.10 modify URL breaks
-) (regressions_mcf.aux
+) (Paper-with-code.aux
 
 LaTeX Warning: Label `' multiply defined.
 
@@ -503,38 +521,38 @@ LaTeX Warning: Label `' multiply defined.
 LaTeX Warning: Label `' multiply defined.
 
 )
-\openout1 = `regressions_mcf.aux'.
+\openout1 = `Paper-with-code.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 104.
-LaTeX Font Info:    ... okay on input line 104.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 104.
-LaTeX Font Info:    ... okay on input line 104.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 104.
-LaTeX Font Info:    ... okay on input line 104.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 104.
-LaTeX Font Info:    ... okay on input line 104.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 104.
-LaTeX Font Info:    ... okay on input line 104.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 104.
-LaTeX Font Info:    ... okay on input line 104.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 104.
-LaTeX Font Info:    ... okay on input line 104.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 104.
-LaTeX Font Info:    ... okay on input line 104.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 104.
-LaTeX Font Info:    ... okay on input line 104.
-LaTeX Info: Redefining \microtypecontext on input line 104.
-Package microtype Info: Applying patch `item' on input line 104.
-Package microtype Info: Applying patch `toc' on input line 104.
-Package microtype Info: Applying patch `eqnum' on input line 104.
-Package microtype Info: Applying patch `footnote' on input line 104.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 144.
+LaTeX Font Info:    ... okay on input line 144.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 144.
+LaTeX Font Info:    ... okay on input line 144.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 144.
+LaTeX Font Info:    ... okay on input line 144.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 144.
+LaTeX Font Info:    ... okay on input line 144.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 144.
+LaTeX Font Info:    ... okay on input line 144.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 144.
+LaTeX Font Info:    ... okay on input line 144.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 144.
+LaTeX Font Info:    ... okay on input line 144.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 144.
+LaTeX Font Info:    ... okay on input line 144.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 144.
+LaTeX Font Info:    ... okay on input line 144.
+LaTeX Info: Redefining \microtypecontext on input line 144.
+Package microtype Info: Applying patch `item' on input line 144.
+Package microtype Info: Applying patch `toc' on input line 144.
+Package microtype Info: Applying patch `eqnum' on input line 144.
+Package microtype Info: Applying patch `footnote' on input line 144.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `alltext-nott'.
-LaTeX Info: Redefining \showhyphens on input line 104.
+LaTeX Info: Redefining \showhyphens on input line 144.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -547,16 +565,16 @@ File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman
 (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/context/base/mkii\supp-p
 df.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count297
-\scratchdimen=\dimen167
-\scratchbox=\box57
-\nofMPsegments=\count298
-\nofMParguments=\count299
+\scratchcounter=\count300
+\scratchdimen=\dimen171
+\scratchbox=\box58
+\nofMPsegments=\count301
+\nofMParguments=\count302
 \everyMPshowfont=\toks28
-\MPscratchCnt=\count300
-\MPscratchDim=\dimen168
-\MPnumerator=\count301
-\makeMPintoPDFobject=\count302
+\MPscratchCnt=\count303
+\MPscratchDim=\dimen172
+\MPnumerator=\count304
+\makeMPintoPDFobject=\count305
 \everyMPtoPDFconversion=\toks29
 )
 (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/epstopdf-pkg\epsto
@@ -603,34 +621,34 @@ File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring OFF on input line 104.
+Package hyperref Info: Link coloring OFF on input line 144.
 LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 1
-06.
+46.
 (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/lm\ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OML+lmm on input line 1
-06.
+46.
 (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/lm\omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
-106.
+146.
 (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/lm\omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
-106.
+146.
 (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/lm\omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 106.
+(Font)              <12> on input line 146.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 106.
+(Font)              <8> on input line 146.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 106.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 106
+(Font)              <6> on input line 146.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 146
 .
 (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
@@ -639,7 +657,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 fg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 106
+LaTeX Font Info:    Trying to load font information for U+msb on input line 146
 .
 (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -647,7 +665,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/microtype\mt-msb.c
 fg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-) (regressions_mcf.toc
+) (Paper-with-code.toc
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <10> on input line 1.
 LaTeX Font Info:    External font `lmex10' loaded for size
@@ -655,75 +673,97 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <5> on input line 1.
 )
-\tf@toc=\write3
-\openout3 = `regressions_mcf.toc'.
+\tf@toc=\write4
+\openout4 = `Paper-with-code.toc'.
 
 [1
 
 {C:/Users/Pjeter/AppData/Local/MiKTeX/2.9/fonts/map/pdftex/pdftex.map}] [2]
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 1
-63.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 2
+21.
 (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/lm\ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [3]
 <Sentiment_andBert_Fed.png, id=52, 891.8118pt x 442.2924pt>
 File: Sentiment_andBert_Fed.png Graphic file (type png)
 <use Sentiment_andBert_Fed.png>
-Package pdftex.def Info: Sentiment_andBert_Fed.png  used on input line 243.
+Package pdftex.def Info: Sentiment_andBert_Fed.png  used on input line 303.
 (pdftex.def)             Requested size: 469.75952pt x 232.97635pt.
-[4 <./Sentiment_andBert_Fed.png>] [5] [6] [7] [8] [9] [10]
-
-LaTeX Warning: Float too large for page by 26.80946pt on input line 705.
-
-[11] [12]
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 7
-53.
+[4 <./Sentiment_andBert_Fed.png>]
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 3
+89.
 (C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/lm\t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-<regressions_mcf_files/figure-latex/unnamed-chunk-3-1.pdf, id=110, 469.755pt x 
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 398.
+
+LaTeX Font Warning: Font shape `T1/lmtt/bx/it' in size <10> not available
+(Font)              Font shape `T1/lmtt/b/sl' tried instead on input line 398.
+
+LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
+453.
+(C:\Users\Pjeter\AppData\Local\Programs\MiKTeX 2.9\tex/latex/lm\ts1lmtt.fd
+File: ts1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+) [5]
+Underfull \vbox (badness 10000) detected at line 492
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 492
+ []
+
+[6]
+Underfull \vbox (badness 4805) detected at line 514
+ []
+
+[7] [8] [9] [10] [11] [12]
+
+LaTeX Warning: Float too large for page by 26.80946pt on input line 941.
+
+[13] [14] [15]
+<Paper-with-code_files/figure-latex/unnamed-chunk-3-1.pdf, id=130, 469.755pt x 
 325.215pt>
-File: regressions_mcf_files/figure-latex/unnamed-chunk-3-1.pdf Graphic file (ty
+File: Paper-with-code_files/figure-latex/unnamed-chunk-3-1.pdf Graphic file (ty
 pe pdf)
-<use regressions_mcf_files/figure-latex/unnamed-chunk-3-1.pdf>
-Package pdftex.def Info: regressions_mcf_files/figure-latex/unnamed-chunk-3-1.p
-df  used on input line 799.
+<use Paper-with-code_files/figure-latex/unnamed-chunk-3-1.pdf>
+Package pdftex.def Info: Paper-with-code_files/figure-latex/unnamed-chunk-3-1.p
+df  used on input line 1067.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[13]
-<regressions_mcf_files/figure-latex/unnamed-chunk-6-1.pdf, id=118, 469.755pt x 
+[16 <./Paper-with-code_files/figure-latex/unnamed-chunk-3-1.pdf>]
+<Paper-with-code_files/figure-latex/unnamed-chunk-6-1.pdf, id=141, 469.755pt x 
 325.215pt>
-File: regressions_mcf_files/figure-latex/unnamed-chunk-6-1.pdf Graphic file (ty
+File: Paper-with-code_files/figure-latex/unnamed-chunk-6-1.pdf Graphic file (ty
 pe pdf)
-<use regressions_mcf_files/figure-latex/unnamed-chunk-6-1.pdf>
-Package pdftex.def Info: regressions_mcf_files/figure-latex/unnamed-chunk-6-1.p
-df  used on input line 834.
+<use Paper-with-code_files/figure-latex/unnamed-chunk-6-1.pdf>
+Package pdftex.def Info: Paper-with-code_files/figure-latex/unnamed-chunk-6-1.p
+df  used on input line 1144.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[14 <./regressions_mcf_files/figure-latex/unnamed-chunk-3-1.pdf>] [15 <./regres
-sions_mcf_files/figure-latex/unnamed-chunk-6-1.pdf>] [16]
-Overfull \hbox (0.3461pt too wide) in paragraph at lines 918--922
+[17] [18 <./Paper-with-code_files/figure-latex/unnamed-chunk-6-1.pdf>] [19]
+Overfull \hbox (0.3461pt too wide) in paragraph at lines 1228--1232
 []\T1/lmr/m/n/10 (-20) Bodnaruk, Andriy, Tim Loughran, and Bill McDonald. 2015.
  ``Using 10-k Text to Gauge Financial Constraints.''
  []
 
-[17] (regressions_mcf.aux)
+[20] (Paper-with-code.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 14103 strings out of 476372
- 232492 string characters out of 2785563
- 1878787 words of memory out of 3000000
- 34034 multiletter control sequences out of 15000+600000
- 568535 words of font info for 142 fonts, out of 8000000 for 9000
+ 14661 strings out of 476372
+ 241592 string characters out of 2785563
+ 1872787 words of memory out of 3000000
+ 34572 multiletter control sequences out of 15000+600000
+ 570104 words of font info for 147 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 74i,10n,81p,1014b,472s stack positions out of 10000i,1000n,20000p,200000b,80000s
-{C:/Users/Pjeter/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.e
-nc}{C:/Users/Pjeter/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mat
-hsy.enc}{C:/Users/Pjeter/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/l
-m-rm.enc}{C:/Users/Pjeter/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/
-lm-mathit.enc}{C:/Users/Pjeter/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvip
-s/lm/lm-ts1.enc}<C:/Users/Pjeter/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/
+ 74i,10n,81p,1014b,645s stack positions out of 10000i,1000n,20000p,200000b,80000s
+{C:/Users/Pjeter/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ts1.
+enc}{C:/Users/Pjeter/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec
+.enc}{C:/Users/Pjeter/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/lm-m
+athsy.enc}{C:/Users/Pjeter/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm
+/lm-rm.enc}{C:/Users/Pjeter/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/l
+m/lm-mathit.enc}<C:/Users/Pjeter/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/
 public/lm/lmbx10.pfb><C:/Users/Pjeter/AppData/Local/Programs/MiKTeX 2.9/fonts/t
 ype1/public/lm/lmbx12.pfb><C:/Users/Pjeter/AppData/Local/Programs/MiKTeX 2.9/fo
 nts/type1/public/lm/lmmi10.pfb><C:/Users/Pjeter/AppData/Local/Programs/MiKTeX 2
@@ -734,10 +774,14 @@ ams/MiKTeX 2.9/fonts/type1/public/lm/lmr7.pfb><C:/Users/Pjeter/AppData/Local/Pr
 ograms/MiKTeX 2.9/fonts/type1/public/lm/lmri10.pfb><C:/Users/Pjeter/AppData/Loc
 al/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmsy10.pfb><C:/Users/Pjeter/AppDat
 a/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmsy7.pfb><C:/Users/Pjeter/Ap
-pData/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmtt10.pfb>
-Output written on regressions_mcf.pdf (17 pages, 417299 bytes).
+pData/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmtk10.pfb><C:/Users/Pjet
+er/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmtko10.pfb><C:/User
+s/Pjeter/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmtt10.pfb><C:
+/Users/Pjeter/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmtti10.p
+fb>
+Output written on Paper-with-code.pdf (20 pages, 511050 bytes).
 PDF statistics:
- 275 PDF objects out of 1000 (max. 8388607)
- 61 named destinations out of 1000 (max. 500000)
+ 310 PDF objects out of 1000 (max. 8388607)
+ 65 named destinations out of 1000 (max. 500000)
  30840 words of extra memory for PDF output out of 35830 (max. 10000000)
 
