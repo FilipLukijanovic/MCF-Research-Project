@@ -23,6 +23,8 @@ bibliography: references.bib
 ```
 ## Abstract {#sec-abstract}
 
+This study presents a comprehensive analysis of sentiment analysis methodologies applied to central bank statements, focusing on the Federal Open Market Committee (FOMC) announcements. We will start of in a regression manner similar to Möller and Reichmann's (2021) methodology. However, we will drift away from their approach of looking at macroeconomic factors, but will move towards looking at what market factors can drive abnormal returns. Through our investigation, several key conclusions emerge. Firstly, we observe a substantial improvement in explanatory capability when employing heuristics-adjusted dictionary approaches, such as VADER, particularly evident in more homogeneous texts. Secondly, we highlight the significance of incorporating the mechanical component of FOMC statements, specifically the interest rate announcements and associated surprises, to prevent biased estimates in central bank statement analyses. Additionally, we identify a subtle sensitivity of higher leverage periods to these surprises. Lastly, this research lays the groundwork for further exploration of the intersection between natural language processing and financial markets, particularly in event-study contexts.
+
 \pagebreak
 
 ## 1. Literature Review {#sec-literature-review}
@@ -317,7 +319,7 @@ Therefore, we now ensure the soundness of our models and the inclusion of our va
 
 ## 4. Bayesian Model Averaging {#sec-4.-bayesian-model-averaging}
 
-After regressing everything and getting the results we do a final check via Baysian Model Averaging (BMA), where we can see which of the Variables from our Core data set truly are important to abnormal returns. This methodology is to check which variables have the highest comparative importance in a plethora of potential models that include all of our variables, along with interaction terms and both of their parent terms. The 
+After regressing everything and getting the results we do a final check via Baysian Model Averaging (BMA), where we can see which of the Variables from our Core data set truly are important to abnormal returns. This methodology is to check which variables have the highest comparative importance in a plethora of potential models that include all of our variables, along with interaction terms and both of their parent terms. According to Tang (2003), Baysian Methods are often used in the field of Finance, as those eliminate the uncertainty of a potential misspecified model, which BMA would eliminate. BMA methods can pick up true predictors even if the model is not linear, as it can find true predictors. We therefore feel confident, we can pick up the variable importance of the variables given.
 
 ```{r, include=FALSE, echo=FALSE}
 # Defining the Model
