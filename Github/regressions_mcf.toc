@@ -1,5 +1,5 @@
 \contentsline {subsection}{Abstract}{2}{section*.2}%
-\contentsline {subsection}{1. Literature Review}{3}{section*.3}%
+\contentsline {subsection}{1. Introduction}{3}{section*.3}%
 \contentsline {subsection}{2. Data}{3}{section*.4}%
 \contentsline {subsection}{3. Methodology}{3}{section*.5}%
 \contentsline {subsubsection}{3.1 Sentiment Extraction - VADER Method}{4}{section*.6}%

@@ -27,7 +27,7 @@ This research project conducts a topical analysis of sentiment analysis techniqu
 
 \pagebreak
 
-## 1. Literature Review {#sec-literature-review}
+## 1. Introduction {#sec-introduction}
 
 The following research project is mostly based on the work done by Möller and Reichmann (2021) in the field of sentiment analysis. In their paper "ECB Language and Stock Returns - A Textual analysis of ECB Press Conferences" they explore the impact of the language used by the ECB in their regular press conferences on stock returns in the Euro Area.
 
@@ -83,7 +83,7 @@ As a next step, we had to transform and prepare all of our financial data for an
 
 ### 3.3 Financial Data Processing {#sec-3.3-financial-data-processing}
 
-For every data point of our financial data, the last available datapoint was carried forward to the day of the FOMC minute issue, whereby returns were constructed via log-returns, in order to facilitate the computation of average returns in order to calculate abnormal returns. The abnormal returns, our independent variable of interest, was constructed using the model of MacKinlay (1997) @mackinlay1997event, who computed abnormal returns as the of cumulative returns after an event over average returns over a period, in our case 3 years.
+For every data point of our financial data, the last available datapoint was carried forward to the day of the FOMC minute issue, whereby returns were constructed via log-returns, in order to facilitate the computation of average returns in order to calculate abnormal returns. The abnormal returns, our independent variable of interest, was constructed using the model of MacKinlay (1997) @mackinlay1997event, who computed abnormal returns as cumulative returns after an event over average returns over a period, in our case 3 years.
 
 Furthermore, we constructed a variable which captures the surprise effect of interest rate changes, in line with Möller and Reichmann's (2021) method in order to truly isolate the effect of sentiment from the mechanical effect of interest rate levels. This variable was constructed via the difference of implied interest rate expectations from federal funds rate futures one day before the announcement and the actual interest rate that was announced.
 
