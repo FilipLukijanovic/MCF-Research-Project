@@ -4,6 +4,9 @@ author:
 - Matthias Farngruber, 11801413
 - Filip Lukijanovic, 11776896
 - Peter Prlleshi, 11776041
+header-includes:
+   - \usepackage{float}
+   - \usepackage{lipsum}
 output:
   pdf_document:
     latex_engine: pdflatex
@@ -62,6 +65,15 @@ Finally, we constructed the three sentiment elements and saw their trajectory mo
 \caption{Sentiment Trajectory}
 \end{figure}
 ```
+
+In the plot above, we can see the trajectory of each sentiment element of FOMC minutes over time, along with the Fed's interest rate, offering some interesting insights into the interplay between monetary policy, forward guidance and sentiment. Notably, as sentiment in FOMC minutes deteriorated in the periods of 2020, mostly attributable to the adverse impacts of COVID as well as in the period of 2021 to 2023, mostly attributable to the flare-ups of armed conflict around the world, a rise in interest rates would follow a drop in sentiment. This is a very interesting development, as historically a deterioration in economic outlook, i.e. during the time of the great financial crisis, lead to a decrease in interest rates. However, one must discriminate between sentiment deterioration lead by financial instability shocks which necessitate an injection of liquidity into capital markets, and the contemporary drivers of sentiment deterioration, which are geopolitical woes and inflationary pressures resulting from them. Whether it be Russian aggression or Houthi attacks on global commerce, these factors incessantly are inflationary phenomena from a monetary perspective.
+When looking at the graph, the amount of uncertainty around monetary policy seems to rise more poignantly as well, whereby the Fed seems to have turned to a less binding language, in line with that of the ECB, that points to more data-driven decision making and allows for more flexibility, so as to not cause volatility due to policy deviations and surprises, an occurrence forward guidance was meant to alleviate in the first place.
+
+Constraining language, interestingly, does seem to exhibit some form of relationship with tone, which could indicate that as economic conditions deteriorate, the Federal Reserve's decision set is considerably reduced.
+
+
+
+
 ### 3.2 Sentiment Extraction - FinBERT Method {#sec-3.2-sentiment-extraction---finbert-method}
 
 Another route we took to sentiment construction was that of FinBERT. FinBERT is a transformer-based natural language processing model that can analyze phrases contextually by looking at both preceding and succeeding words, i.e. it is bidirectional, which our VADER approach is not. FinBERT is an adaptation of BERT which was a generalized sentiment analysis tool developed by Google, whereby Araci (2019) @araci2019finbert trained it on an extensive corpus of financial data. Luckily for us, Chen et al. (2023) @chen2023finbert took it one step further and trained BERT on FOMC statement sentiment, which seemed like an ideal approach to pit our tone construction against in our analysis. Similarly to the approach with VADER, we constructed sentiments by BERT on a sentence by sentence basis and weighted every sentence by its relative word count.
@@ -87,6 +99,7 @@ library(stargazer)
 library(lmtest)
 library(BMS)
 library(writexl)
+library(ggplot2)
 ```
 
 ```{r Definition of Data, include=FALSE}
@@ -203,6 +216,12 @@ simple_bert <- lm(abnormal_return ~ Bert, data = Core)
 stargazer(simple_tone, simple_con, simple_unc, simple_bert, column.labels = c("Tone", "Unc", "Con", "Bert"), header = F)
 
 ```
+Looking at Table 1, the intuition seems to be correct. We can see neither of those sentiment variables are significant in our baseline regression. Model fit also seems to be an issue as the R2 and adjusted R2 are no way near 1. Therefore, we can shortly conclude, that only (for example) constraining messages or uncertainty messages from the FED will not impact abnormal returns by themselves. Regressing all sentiment variables in one model also does not seem to be the correct approach, as those sentiment variables might be correlated due to their nature. Also, the authors of the original paper stayed away from such an approach. Furthermore, the potential for confounding factors that cloud the effect that sentiment could have on returns is not taken into account here, which, given the diverse nature of the information set that capital markets absorb concurrently, does seem relevant. 
+
+Because the sentiments alone do not seem to have the a significant standalone impact on abnormal returns, we start looking at different economic circumstances which could extract the partial impact of sentiments on abnormal returns. By adding a different variables one step at a time, we can fully grasp what impacts abnormal returns on “FED announcement days” and prevent overfitting, which could be an issue when looking at the fully specified model immediately. Firstly, a good variable to start off with is interest rates. Interest rates will paint the picture of monetary conditions in the economy at the moment. We therefore include IR into our models.
+
+
+
 
 \pagebreak
 
@@ -216,6 +235,11 @@ stargazer(simple_bert_IR, simple_bert_IR, simple_bert_IR, simple_bert_IR,
           column.labels = c("Tone", "Unc", "Con", "Bert"), header = F)
 
 ```
+Looking at Table 2, we unfortunately can see that there is still no significant impact on abnormal returns, when regressing the sentiments alongside interest rates. This would generally make sense as the prevailing interest rate is known to the market. It also can be argued that those sentiment scores and interest rates could possibly correlated a bit. High constraining language, by theory, could easily go hand in hand with higher interest rates, and so on. Model fit, i.e. R2 and adjusted R2 seemed to have also deteriorated by adding interest rates. The latter part is to be expected, as adjusted R2 takes adding variables into account via a penalty term.
+However, we still stick by our step-wise addition of variables in order to in the end arrive at a feasible model, where interest rates will likely not be included. We therefore built upon this model and added the lagged returns on in our model to account for any autoregressive impact of past returns on abnormal returns. We now regress abnormal returns on Tone, Con, Unc, as well as on IR and lagged_return.
+
+\pagebreak
+
 
 ```{r Models including LR, results='asis'}
 simple_tone_LR <- lm(abnormal_return ~ Tone + IR + lagged_return, data = Core)
@@ -226,6 +250,10 @@ simple_bert_LR <- lm(abnormal_return ~ Bert + IR + lagged_return, data = Core)
 stargazer(simple_tone_LR, simple_con_LR, simple_unc_LR, simple_bert_LR, column.labels = c("Tone", "Unc", "Con", "Bert"), header = F)
 ```
 
+Unfortunately, looking at the results from table 3, there are still no significant impacts on abnormal returns, which is a bit disheartening. However, model fit seems to have improved a bit. We still have a lot more variables which could help our ordeal though. We now add a special variable which could be a key contributor in the process. The other variables are self-explanatory (for the most part) – but how was the Surprise variable constructed? It is, as mentioned above, the difference between the Federal Funds rate on announcement day and Fed Funds Futures as a gaugue for market expectations, i.e. the surprise effect of the interest rate change on the market. This means that, this variable will account for unexpected announcement results from the fed and discounts it. 
+
+
+
 ```{r Models including SUR, results='asis'}
 simple_tone_SUR <- lm(abnormal_return ~ Tone + IR + lagged_return + Surprise, data = Core)
 simple_unc_SUR <- lm(abnormal_return ~ Unc + IR + lagged_return + Surprise, data = Core)
@@ -235,6 +263,15 @@ simple_bert_SUR <- lm(abnormal_return ~ Bert + IR + lagged_return + Surprise, da
 stargazer(simple_tone_SUR, simple_unc_SUR, simple_con_SUR, simple_bert_SUR, column.labels = c("Tone", "Unc", "Con", "Bert"), header = F)
 
 ```
+Analysing table 4, one can now start to understand why we think highly of the surprise variable. By adding surprise, we can now start to see how abnormal returns react to FED Statements. In our model now, Tone is significant. According to the authors, this indicates that a more positive (negative) language of the FED is associated with higher (lower) intraday abnormal returns. This is in line with the findings of Schmeling and Wagner (2019), who found that negative changes in the fraction of negative words within an introductory statement of an ECB press conferences have a positive influence on stock prices and a negative influence on volatility risk premia and credit spreads. We also find that, Surprise is significant in every model other than Unc. This can be explained, intuitively, as any information not included in the market price is bound to move it once it becomes available to its participants, which in the case of interest rates is on the day of the announcement.
+
+Last but not least, we include the debt to equity ratio of the index into our model. This variable tells us the rate of debt those firms have in relation to their equity. The higher this ratio is the higher the leverage of its firm, the more it might react to interest rates changes. This will now complete our intended model. However, before we delve into that analysis, we must ensure the soundness of our model. Up to this point, the model was constructed following Möller and Reichmann (2021). Including a variable for indebtedness would hence depart from their analysis and open an additional avenue of investigation, on top of the one we opened by investigating whether a "plug and play" NLP program such as BERT would clearly outperform a more bespoke approach, as conducted by Möller and Reichmann (2021).
+
+Therefore, we now ensure the soundness of our models and the inclusion of our variables, especially of the interest rate variable which prompted a negative R2, via a bayesian model averaging algorithm. By cycling over all potential combinations of models, we want to ascertain the relative importance of each variable. The bayesian model averaging algorithm does so by determining the post-inclusion probability for each of our variables. We see that....
+
+
+
+
 
 ```{r Models including DE, results='asis'}
 simple_tone_DE <- lm(abnormal_return ~ Tone + IR + lagged_return + Surprise + debt_equity, data = Core)
@@ -245,6 +282,12 @@ simple_bert_DE <- lm(abnormal_return ~ Bert + IR + lagged_return + Surprise + de
 stargazer(simple_tone_DE, simple_unc_DE, simple_con_DE, simple_bert_DE, column.labels = c("Tone", "Unc", "Con", "Bert"), header = F)
 
 ```
+
+As seen in Table 5, we still have a significant value of tone, but the significance of surprise has changed in some variables. Instead of our FinBERT sentiment being significant, uncertainty has now become significant. Generally an overall underperformance of the BERT approach seems to become evident, something that we will delve into later.
+A model which could become interesting is our model with interaction terms. The idea is that by adding interaction the effect of "Tone", "Unc", "Con", "Bert" or "Surprise" on abnormal returns is moderated by the company's leverage. In other words, the impact of these sentiment on returns may vary depending on the leverage ratio. This is intuitive as a company with higher leverage will be much more sensitive to changes in its cost of capital, and hence, sensitive to indications that such a cost of capital change could come. Such an indication is the sentiment of FOMC statements.
+
+
+
 
 ```{r, results='asis'}
 interactions_tone <- lm(abnormal_return ~ Tone * debt_equity + IR + lagged_return + Surprise * debt_equity + debt_equity, data = Core)
@@ -292,6 +335,47 @@ Considering the fact that FED statements have been forced to consider significan
 While the U.S. interest rate policy must inevitably take into account global geopolitical events, it can only incorporate them to a limited extent.This means that a discrepancy between the U.S.-focused and more "fact-based" interest rate and the more "human" statements will likely occur, as shown in the graph in Chapter 3.3. Future research could seek to find a way to quantify the difference between economically relevant word-combinations by refining linguistic analysis methods, adjusting dictionaries, and filtering out word combinations that may focus on factors irrelevant to immediate, upcoming policy, thereby emphasizing a more financially centered context.
 
 This research potential especially becomes apparent when observing the disparity between the overall trend the SPX shows since the "COVID-Crash" in March 2020 - particularly the clear positive trend since the beginning of 2023 - and the language employed by the FED in its statements since the beginning of the recorded statements in the data used. As mentioned, future research may seek to refine the dictionaries used and isolate sentences or word-combinations related to unforeseen geopolitical events, that cannot be ignored in a statement by a governing body.
+
+```{r}
+
+window<- 50
+
+RegressionDates<- FilterDates[window:length(FilterDates)]
+Tone_SE<- c()
+Tone<- c()
+
+for (i in RegressionDates){
+  # this part is tricky - how to filter the right window of data??
+index_end <- which(FilterDates==i)
+
+index_start <- index_end - window
+
+data<- Core[index_start:index_end,]
+reg <- summary(lm(abnormal_return ~ Tone + IR + lagged_return + Surprise + debt_equity, data = data))
+Tone<- c(Tone,reg$coefficients[2])
+Tone_SE<- c(Tone_SE,reg$coefficients[8])
+}
+
+# add 0-line to get significance right at 10%
+```
+
+```{r}
+upper_Tone<- Tone+Tone_SE
+lower_Tone<- Tone-Tone_SE
+plotbands<-data.frame(cbind(Tone, lower_Tone,upper_Tone))
+plotbands$date<-as.POSIXct(RegressionDates)
+```
+
+```{r}
+
+ggplot(plotbands, aes(x = RegressionDates, y = Tone)) +
+  geom_ribbon(aes(ymin = lower_Tone, ymax = upper_Tone),
+              fill = "lightblue", alpha = 0.5) +
+  geom_line(color = "blue") +
+  labs(title = "Time Series with Error Bands",
+       x = "Time", y = "Value")
+
+```
 
 ## 6. Conclusion
 
